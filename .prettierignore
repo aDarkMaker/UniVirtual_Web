@@ -1,0 +1,11 @@
+node_modules/
+dist/
+out/
+.astro/
+coverage/
+.turbo/
+build/
+.cache/
+bun.lock
+*.min.js
+public/

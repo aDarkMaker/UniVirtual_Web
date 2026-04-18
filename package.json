@@ -1,0 +1,26 @@
+{
+	"name": "univirtual",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier . --write",
+		"format:check": "prettier . --check",
+		"spellcheck": "cspell \"**/*.{ts,tsx,astro,md,mdx,json,yml,yaml}\""
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"cspell": "^10.0.0",
+		"eslint": "^10.2.1",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-astro": "^1.7.0",
+		"globals": "^17.5.0",
+		"prettier": "^3.8.3",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.58.2"
+	}
+}
