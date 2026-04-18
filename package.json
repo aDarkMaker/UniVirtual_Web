@@ -1,11 +1,11 @@
 {
 	"name": "univirtual",
 	"private": true,
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
 	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"typecheck": "tsc --noEmit",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier . --write",
@@ -13,6 +13,7 @@
 		"spellcheck": "cspell \"**/*.{ts,tsx,astro,md,mdx,json,yml,yaml}\""
 	},
 	"devDependencies": {
+		"@astrojs/check": "^0.9.8",
 		"@eslint/js": "^10.0.1",
 		"cspell": "^10.0.0",
 		"eslint": "^10.2.1",
@@ -22,5 +23,8 @@
 		"prettier": "^3.8.3",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.58.2"
+	},
+	"dependencies": {
+		"astro": "^6.1.8"
 	}
 }

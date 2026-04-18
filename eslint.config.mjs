@@ -23,21 +23,15 @@ export default tseslint.config(
 	eslint.configs.recommended,
 	...tseslint.configs.recommended,
 	{
-		files: ['apps/web/**/*.{ts,tsx}'],
+		files: ['src/**/*.{ts,tsx}'],
 		languageOptions: {
 			globals: globals.browser,
 		},
 	},
 	{
-		files: ['apps/api/**/*.{ts,tsx}'],
+		files: ['astro.config.mjs', 'eslint.config.mjs'],
 		languageOptions: {
 			globals: globals.node,
-		},
-	},
-	{
-		files: ['packages/**/*.{ts,tsx}'],
-		languageOptions: {
-			globals: globals['shared-node-browser'],
 		},
 	},
 	{
