@@ -1,12 +1,11 @@
 import { fileURLToPath } from 'node:url';
 
-import react from '@astrojs/react';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://univirtual.cn',
 	compressHTML: true,
-	integrations: [react()],
+	integrations: [],
 	vite: {
 		resolve: {
 			alias: {
