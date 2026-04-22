@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="./public/img/favicon.png" alt="Univirtual" width="96" />
-  <p>高校势虚拟主播</p>
+  <img src="./public/img/favicon.png" alt="Univirtual" width="160" />
+  <h2><a href="https://univirtual.cn"><strong>高校势虚拟主播</strong></a></h2>
 </div>
 
 ---
