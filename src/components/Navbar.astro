@@ -1,0 +1,105 @@
+﻿---
+import { mainNav, siteMeta } from '@/lib/site';
+import '@/styles/navbar.css';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="nav" id="main-nav">
+  <div class="nav-inner">
+
+    <a href="/" class="nav-logo">
+      <img src="/img/favicon.png" alt={siteMeta.title} />
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+      <ul>
+        {mainNav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={currentPath === item.href ? 'active' : undefined}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener noreferrer' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="nav-theme-switch" id="nav-theme-toggle" role="switch" aria-label="切换明暗模式" aria-checked="false">
+        <span class="theme-switch-track">
+          <img class="theme-icon theme-icon-moon" src="/icon/moon.svg" alt="" width="16" height="16" />
+          <img class="theme-icon theme-icon-sun" src="/icon/sun.svg" alt="" width="16" height="16" />
+        </span>
+        <span class="theme-switch-thumb"></span>
+      </button>
+
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="打开菜单" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <ul>
+      {mainNav.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={currentPath === item.href ? 'active' : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('main-nav')!;
+  const hamburger = document.getElementById('nav-hamburger')!;
+  const mobileMenu = document.getElementById('nav-mobile')!;
+  const themeToggle = document.getElementById('nav-theme-toggle') as HTMLButtonElement;
+
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!isOpen));
+    mobileMenu.setAttribute('aria-hidden', String(isOpen));
+    mobileMenu.classList.toggle('open', !isOpen);
+  });
+
+  mobileMenu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  const applyTheme = (dark: boolean) => {
+    document.documentElement.classList.toggle('light', !dark);
+    themeToggle.setAttribute('aria-checked', String(!dark));
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  };
+
+  const savedTheme = localStorage.getItem('theme');
+  applyTheme(savedTheme !== 'light');
+
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.documentElement.classList.contains('light'));
+  });
+</script>
