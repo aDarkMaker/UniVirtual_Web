@@ -17,8 +17,8 @@ export const siteMeta: SiteMeta = {
 };
 
 export const mainNav: NavItem[] = [
-	{
-		label: '首页',
-		href: '/',
-	},
+	{ label: '我们是谁', href: '/about' },
+	{ label: '动态资讯', href: '/news' },
+	{ label: '详情介绍', href: '/intro' },
+	{ label: '加入我们', href: '/join' },
 ];
