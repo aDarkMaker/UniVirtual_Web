@@ -149,7 +149,6 @@
   flex-shrink: 0;
 }
 
-/* 暗色：深色轨道 + 白色图标 */
 .theme-switch-track {
   position: absolute;
   inset: 0;
@@ -169,7 +168,6 @@
 }
 
 
-/* 亮色：亮色轨道 + 深色图标 */
 :root.light .theme-switch-track {
   background: rgba(255, 255, 255, 0.50);
   border-color: rgba(255, 255, 255, 0.80);
@@ -181,7 +179,6 @@
 }
 
 
-/* 暗色：深蓝黑圆点 */
 .theme-switch-thumb {
   position: absolute;
   top: 3px;
@@ -196,13 +193,11 @@
   z-index: 2;
 }
 
-/* 亮色：白色圆点 */
 :root.light .theme-switch-thumb {
   background: #ffffff;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.20);
 }
 
-/* 两个图标始终显示在 track 两侧 */
 .theme-icon {
   display: block;
   width: 16px;
@@ -213,13 +208,11 @@
   pointer-events: none;
 }
 
-/* 暗色：图标白色 */
 .theme-icon-moon,
 .theme-icon-sun {
   filter: invert(1) opacity(0.85);
 }
 
-/* 亮色：图标深色 */
 :root.light .theme-icon-moon,
 :root.light .theme-icon-sun {
   filter: invert(0) opacity(0.70);
