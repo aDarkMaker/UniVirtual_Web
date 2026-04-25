@@ -8,7 +8,7 @@ const currentPath = Astro.url.pathname;
 <header class="nav" id="main-nav">
   <div class="nav-inner">
 
-    <a href="/" class="nav-logo">
+    <a href="/" class="nav-logo" id="nav-logo">
       <img src="/img/favicon.png" alt={siteMeta.title} />
     </a>
 
@@ -90,14 +90,19 @@ const currentPath = Astro.url.pathname;
     });
   });
 
+  const logo = document.getElementById('nav-logo')!;
+  logo.addEventListener('click', (e) => {
+    if (window.location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
   const applyTheme = (dark: boolean) => {
     document.documentElement.classList.toggle('light', !dark);
     themeToggle.setAttribute('aria-checked', String(!dark));
     localStorage.setItem('theme', dark ? 'dark' : 'light');
   };
-
-  const savedTheme = localStorage.getItem('theme');
-  applyTheme(savedTheme !== 'light');
 
   themeToggle.addEventListener('click', () => {
     applyTheme(document.documentElement.classList.contains('light'));

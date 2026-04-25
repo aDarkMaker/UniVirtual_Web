@@ -30,7 +30,14 @@ const {
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap"
       rel="stylesheet"
     />
+
+    <script is:inline>
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.add('light');
+      }
+    </script>
   </head>
+
   <body>
     <Navbar />
     <main>

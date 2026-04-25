@@ -18,7 +18,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 2px 6px rgba(58, 57, 57, 0.16);
 }
 
 /* ── Inner Layout ── */
@@ -218,7 +218,8 @@
   filter: invert(0) opacity(0.70);
 }
 
-.nav-theme-switch[aria-checked="true"] .theme-switch-thumb {
+.nav-theme-switch[aria-checked="true"] .theme-switch-thumb,
+:root.light .nav-theme-switch .theme-switch-thumb {
   transform: translateX(35px);
 }
 

@@ -68,6 +68,12 @@ html {
 	font-family: var(--font-body);
 	scroll-behavior: smooth;
 	transition: background-color 0.3s ease, color 0.3s ease;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+	display: none;
 }
 
 main {
