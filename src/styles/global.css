@@ -103,3 +103,24 @@ main {
   grid-template-columns: 360px minmax(0, 1fr);
   align-items: stretch;
 }
+
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
+  main {
+    padding-top: var(--nav-height-mobile);
+  }
+
+  .home-main {
+    min-height: auto;
+  }
+
+  .home-main--investigation {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    align-items: start;
+  }
+}

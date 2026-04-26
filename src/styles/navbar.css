@@ -377,5 +377,31 @@
 
   .nav-mobile {
     display: block;
+    position: fixed;
+    top: var(--nav-height-mobile);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(100dvh - var(--nav-height-mobile));
+    max-height: none;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+    z-index: 1199;
+    background: color-mix(in srgb, var(--nav-blur-bg) 96%, black 4%);
+  }
+
+  .nav-mobile.open {
+    max-height: none;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .nav-mobile ul {
+    height: 100%;
+    overflow-y: auto;
+    padding: 12px 24px 24px;
   }
 }
