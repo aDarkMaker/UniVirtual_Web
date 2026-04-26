@@ -62,6 +62,13 @@
 	--icon-filter:         invert(0);
 }
 
+html:not(.theme-ready),
+html:not(.theme-ready) *,
+html:not(.theme-ready) *::before,
+html:not(.theme-ready) *::after {
+	transition: none !important;
+}
+
 html {
 	background-color: var(--color-bg);
 	color: var(--color-text);

@@ -9,7 +9,6 @@
   z-index: 100;
   transition:
     background 0.4s ease,
-    border-color 0.4s ease,
     box-shadow 0.4s ease;
 }
 
@@ -17,7 +16,6 @@
   background: var(--nav-blur-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--color-border);
   box-shadow: 0 2px 6px rgba(58, 57, 57, 0.16);
 }
 

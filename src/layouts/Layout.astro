@@ -1,4 +1,5 @@
 ---
+import CursorTrail from '@/components/CursorTrail.astro';
 import Navbar from '@/components/Navbar.astro';
 import { siteMeta } from '@/lib/site';
 import '@/styles/global.css';
@@ -23,22 +24,24 @@ const {
     <title>{title}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/img/favicon.png" type="image/png" />
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap"
       rel="stylesheet"
     />
-
     <script is:inline>
       if (localStorage.getItem('theme') === 'light') {
         document.documentElement.classList.add('light');
       }
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        document.documentElement.classList.add('theme-ready');
+      }));
     </script>
   </head>
 
   <body>
+    <CursorTrail />
     <Navbar />
     <main>
       <slot />
