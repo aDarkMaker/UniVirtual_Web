@@ -77,12 +77,29 @@ html {
 	transition: background-color 0.3s ease, color 0.3s ease;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
+	overflow: hidden;
 }
 
 html::-webkit-scrollbar {
 	display: none;
 }
 
+body {
+	overflow: hidden;
+}
+
 main {
-	padding-top: var(--nav-height);
+  padding-top: var(--nav-height);
+}
+
+.home-main {
+  min-height: calc(100vh - var(--nav-height));
+}
+
+.home-main--investigation {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  align-items: stretch;
 }

@@ -1,7 +1,18 @@
 ---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
+import CardCarousel from '@/components/CardCarousel.astro';
+import IntelBoard from '@/components/IntelBoard.astro';
+
+const people = (await getCollection('people')).sort(
+  (a: CollectionEntry<'people'>, b: CollectionEntry<'people'>) => a.data.order - b.data.order,
+);
 ---
 
 <Layout>
-  <section style="min-height: 100vh;" />
+  <section class="home-main home-main--investigation">
+    <CardCarousel people={people} />
+    <IntelBoard people={people} />
+  </section>
 </Layout>

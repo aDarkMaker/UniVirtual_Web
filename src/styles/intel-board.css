@@ -1,0 +1,122 @@
+.intel-board {
+  position: relative;
+  z-index: 5;
+  height: calc(100vh - var(--nav-height));
+  padding: 28px 36px 28px 12px;
+  overflow: auto;
+}
+
+.intel-board__panel {
+  display: none;
+  position: relative;
+  min-height: 100%;
+}
+
+.intel-board__panel.is-active {
+  display: block;
+}
+
+.intel-board__head {
+  margin-bottom: 16px;
+}
+
+.intel-board__head p {
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+.intel-board__head h2 {
+  color: var(--color-accent);
+  margin: 8px 0;
+  font-size: 1.5rem;
+}
+
+.intel-board__graph {
+  position: relative;
+  height: 290px;
+  margin-bottom: 14px;
+}
+
+.intel-board__graph svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.78;
+}
+
+.intel-board__graph line {
+  stroke: rgba(255, 255, 255, 0.42);
+  stroke-width: 0.42;
+  stroke-dasharray: 1.8 1.3;
+}
+
+.intel-board__avatar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 72px;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.intel-board__node {
+  position: absolute;
+  transform: translate(-50%, -50%) rotate(var(--note-rotate, 0deg));
+  background: rgba(255, 255, 255, 0.92);
+  color: #10102a;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+}
+
+.intel-board__node.is-sm {
+  padding: 6px 9px;
+  font-size: 0.74rem;
+  --note-rotate: -4deg;
+}
+
+.intel-board__node.is-md {
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  --note-rotate: 2deg;
+}
+
+.intel-board__node.is-lg {
+  padding: 10px 16px;
+  font-size: 0.86rem;
+  --note-rotate: -1deg;
+}
+
+.intel-board__notes {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.intel-board__notes li {
+  color: var(--color-text-muted);
+  line-height: 1.62;
+  max-width: 94%;
+  transform: rotate(var(--line-rotate, 0deg));
+}
+
+.intel-board__notes li:nth-child(1) {
+  --line-rotate: -1deg;
+}
+
+.intel-board__notes li:nth-child(2) {
+  --line-rotate: 0.8deg;
+}
+
+.intel-board__notes li:nth-child(3) {
+  --line-rotate: -0.7deg;
+}
+
+@media (max-width: 768px) {
+  .intel-board {
+    display: none;
+  }
+}
