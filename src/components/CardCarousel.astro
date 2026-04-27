@@ -239,7 +239,7 @@ const cards: CardItem[] = people.map((person, index) => ({
     } else {
       const availableHeight = window.innerHeight - 300;
       const byViewport = Math.floor(availableHeight / (VISIBLE_CARDS - 1));
-      cardStep = Math.max(110, Math.min(160, byViewport));
+      cardStep = Math.max(110, Math.min(220, byViewport));
     }
     updateCarousel();
     scheduleCharacterReveal();

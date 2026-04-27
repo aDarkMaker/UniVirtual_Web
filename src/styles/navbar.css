@@ -22,10 +22,8 @@
 /* ── Inner Layout ── */
 .nav-inner {
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
   height: var(--nav-height);
-  padding: 0 56px;
+  padding: 0 clamp(32px, 3.5vw, 80px);
   display: flex;
   align-items: center;
   justify-content: space-between;
