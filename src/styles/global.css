@@ -11,55 +11,55 @@
 	--nav-height: 96px;
 	--nav-height-mobile: 72px;
 
-	--color-bg:            #080818;
-	--color-surface:       #10102a;
-	--color-surface-2:     #18183a;
+	--color-bg: #080818;
+	--color-surface: #10102a;
+	--color-surface-2: #18183a;
 
-	--color-accent:        #a78bfa;
-	--color-accent-glow:   rgba(167, 139, 250, 0.36);
-	--color-accent-warm:   #f5c842;
+	--color-accent: #a78bfa;
+	--color-accent-glow: rgba(167, 139, 250, 0.36);
+	--color-accent-warm: #f5c842;
 
-	--color-text:          #eeeef8;
-	--color-text-muted:    rgba(238, 238, 248, 0.40);
-	--color-text-hover:    #ffffff;
+	--color-text: #eeeef8;
+	--color-text-muted: rgba(238, 238, 248, 0.4);
+	--color-text-hover: #ffffff;
 
-	--color-border:        rgba(167, 139, 250, 0.18);
+	--color-border: rgba(167, 139, 250, 0.18);
 	--color-border-subtle: rgba(238, 238, 248, 0.08);
-	--color-border-ui:     rgba(238, 238, 248, 0.12);
+	--color-border-ui: rgba(238, 238, 248, 0.12);
 
-	--nav-blur-bg:         rgba(8, 8, 24, 0.90);
-	--nav-link-hover-bg:   rgba(167, 139, 250, 0.07);
-	--nav-link-active-bg:  rgba(167, 139, 250, 0.12);
+	--nav-blur-bg: rgba(8, 8, 24, 0.9);
+	--nav-link-hover-bg: rgba(167, 139, 250, 0.07);
+	--nav-link-active-bg: rgba(167, 139, 250, 0.12);
 
-	--icon-filter:         invert(1);
+	--icon-filter: invert(1);
 
 	--font-display: 'Syne', sans-serif;
-	--font-body:    'Noto Sans SC', system-ui, sans-serif;
+	--font-body: 'Noto Sans SC', system-ui, sans-serif;
 }
 
 /* ── Light ── */
 :root.light {
-	--color-bg:            #7e9edb;
-	--color-surface:       #8fb2e4;
-	--color-surface-2:     #6589c8;
+	--color-bg: #7e9edb;
+	--color-surface: #8fb2e4;
+	--color-surface-2: #6589c8;
 
-	--color-accent:        #ffffff;
-	--color-accent-glow:   rgba(255, 255, 255, 0.40);
-	--color-accent-warm:   #f5c842;
+	--color-accent: #ffffff;
+	--color-accent-glow: rgba(255, 255, 255, 0.4);
+	--color-accent-warm: #f5c842;
 
-	--color-text:          #12112a;
-	--color-text-muted:    rgba(18, 17, 42, 0.55);
-	--color-text-hover:    #07061a;
+	--color-text: #12112a;
+	--color-text-muted: rgba(18, 17, 42, 0.55);
+	--color-text-hover: #07061a;
 
-	--color-border:        rgba(255, 255, 255, 0.35);
-	--color-border-subtle: rgba(18, 17, 42, 0.10);
-	--color-border-ui:     rgba(18, 17, 42, 0.18);
+	--color-border: rgba(255, 255, 255, 0.35);
+	--color-border-subtle: rgba(18, 17, 42, 0.1);
+	--color-border-ui: rgba(18, 17, 42, 0.18);
 
-	--nav-blur-bg:         rgba(126, 158, 219, 0.93);
-	--nav-link-hover-bg:   rgba(255, 255, 255, 0.12);
-	--nav-link-active-bg:  rgba(255, 255, 255, 0.20);
+	--nav-blur-bg: rgba(126, 158, 219, 0.93);
+	--nav-link-hover-bg: rgba(255, 255, 255, 0.12);
+	--nav-link-active-bg: rgba(255, 255, 255, 0.2);
 
-	--icon-filter:         invert(0);
+	--icon-filter: invert(0);
 }
 
 html:not(.theme-ready),
@@ -74,7 +74,9 @@ html {
 	color: var(--color-text);
 	font-family: var(--font-body);
 	scroll-behavior: smooth;
-	transition: background-color 0.3s ease, color 0.3s ease;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 	overflow: hidden;
@@ -89,38 +91,38 @@ body {
 }
 
 main {
-  padding-top: var(--nav-height);
+	padding-top: var(--nav-height);
 }
 
 .home-main {
-  min-height: calc(100vh - var(--nav-height));
+	min-height: calc(100vh - var(--nav-height));
 }
 
 .home-main--investigation {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  grid-template-columns: clamp(360px, 25vw, 520px) minmax(0, 1fr);
-  align-items: stretch;
+	position: relative;
+	isolation: isolate;
+	display: grid;
+	grid-template-columns: clamp(360px, 25vw, 520px) minmax(0, 1fr);
+	align-items: stretch;
 }
 
 @media (max-width: 768px) {
-  html,
-  body {
-    overflow: auto;
-  }
+	html,
+	body {
+		overflow: auto;
+	}
 
-  main {
-    padding-top: var(--nav-height-mobile);
-  }
+	main {
+		padding-top: var(--nav-height-mobile);
+	}
 
-  .home-main {
-    min-height: auto;
-  }
+	.home-main {
+		min-height: auto;
+	}
 
-  .home-main--investigation {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    align-items: start;
-  }
+	.home-main--investigation {
+		grid-template-columns: 1fr;
+		grid-template-rows: auto auto;
+		align-items: start;
+	}
 }

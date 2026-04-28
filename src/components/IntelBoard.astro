@@ -2,101 +2,179 @@
 import type { CollectionEntry } from 'astro:content';
 import '@/styles/intel-board.css';
 
-type IntelNode = { id: string; label: string; x: number; y: number; size: 'sm' | 'md' };
-type IntelEdge = { fromX: number; fromY: number; toX: number; toY: number };
-type IntelPanel = {
-  title: string;
-  subtitle: string;
-  subsubtitle: string;
-  notes: string[];
-  nodes: IntelNode[];
-  edges: IntelEdge[];
-};
-
 interface Props {
-  people: CollectionEntry<'people'>[];
+	people: CollectionEntry<'people'>[];
 }
 
 const { people } = Astro.props as Props;
 
-function buildIntelPanel(person: CollectionEntry<'people'>): IntelPanel {
-  const centerX = 50;
-  const centerY = 50;
-  const radius = 33;
-  const nodes = person.data.tags.map((tag: string, index: number) => {
-    const angle = (-Math.PI / 2) + (Math.PI * 2 * index) / person.data.tags.length;
-    const x = centerX + Math.cos(angle) * radius;
-    const y = centerY + Math.sin(angle) * radius;
-    return {
-      id: `n-${index}`,
-      label: tag,
-      x,
-      y,
-      size: tag.length <= 2 ? 'sm' : 'md',
-    } satisfies IntelNode;
-  });
-  const edges = nodes.map((node: IntelNode) => ({ fromX: centerX, fromY: centerY, toX: node.x, toY: node.y }));
-
-  return {
-    title: person.data.name,
-    subtitle: person.data.subtitle,
-    subsubtitle: person.data.subsubtitle,
-    notes: person.data.notes,
-    nodes,
-    edges,
-  };
-}
-
-const panels = people.map(buildIntelPanel);
+const PHOTO_LAYOUTS = [
+	[
+		{ top: 18, left: 16, rotate: 7, scale: 1.6 },
+		{ top: 34, left: 52, rotate: -2, scale: 1.0 },
+		{ top: 56, left: 20, rotate: -3, scale: 1.2 },
+		{ top: 76, left: 48, rotate: 6, scale: 1.1 },
+	],
+	[
+		{ top: 14, left: 32, rotate: 4, scale: 1.2 },
+		{ top: 44, left: 10, rotate: -6, scale: 1.05 },
+		{ top: 70, left: 40, rotate: 3, scale: 1.1 },
+	],
+	[
+		{ top: 8, left: 24, rotate: -6, scale: 1.1 },
+		{ top: 38, left: 54, rotate: 4, scale: 1.18 },
+		{ top: 64, left: 16, rotate: -4, scale: 1.12 },
+		{ top: 80, left: 56, rotate: 6, scale: 0.94 },
+	],
+	[
+		{ top: 22, left: 8, rotate: 5, scale: 1.15 },
+		{ top: 50, left: 46, rotate: -7, scale: 1.28 },
+	],
+	[
+		{ top: 12, left: 18, rotate: -5, scale: 1.0 },
+		{ top: 32, left: 60, rotate: 4, scale: 1.05 },
+		{ top: 56, left: 28, rotate: 6, scale: 1.15 },
+	],
+	[
+		{ top: 6, left: 44, rotate: -6, scale: 1.05 },
+		{ top: 38, left: 10, rotate: 5, scale: 1.15 },
+		{ top: 60, left: 56, rotate: -4, scale: 1.22 },
+		{ top: 84, left: 26, rotate: 4, scale: 0.9 },
+	],
+	[
+		{ top: 16, left: 34, rotate: 6, scale: 1.25 },
+		{ top: 48, left: 60, rotate: -5, scale: 1.08 },
+		{ top: 74, left: 14, rotate: -3, scale: 1.02 },
+	],
+];
 ---
 
-<aside class="intel-board" id="intel-board">
-  {panels.map((panel, panelIndex) => (
-    <article class={`intel-board__panel${panelIndex === 0 ? ' is-active' : ''}`} data-intel-index={panelIndex}>
-      <header class="intel-board__head">
-        <p>{panel.subtitle}</p>
-        <h2>{panel.title}</h2>
-        <p>{panel.subsubtitle}</p>
-      </header>
+<aside class="profile" id="profile">
+	{people.map((person, i) => {
+		const layout = PHOTO_LAYOUTS[i % PHOTO_LAYOUTS.length];
 
-      <div class="intel-board__graph">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          {panel.edges.map((edge) => (
-            <line x1={edge.fromX} y1={edge.fromY} x2={edge.toX} y2={edge.toY}></line>
-          ))}
-        </svg>
-        <div class="intel-board__avatar"></div>
-        {panel.nodes.map((node) => (
-          <span class={`intel-board__node is-${node.size}`} style={`left:${node.x}%;top:${node.y}%;`}>{node.label}</span>
-        ))}
-      </div>
+		return (
+			<article class={`profile__card${i === 0 ? ' is-active' : ''}`} data-profile-index={i}>
+				<div class="profile__photos">
+					{person.data.cardType === 'xiaoke'
+						? layout.map((pos, pi) => (
+								<figure
+									class="profile__photo"
+									style={`top:${pos.top}%;left:${pos.left}%;--photo-scale:${pos.scale};--photo-rotate:${pos.rotate}deg;--photo-delay:${pi * 0.12}s;`}
+								>
+									<img
+										src={`/img/Photo/xiaoke/${pi + 1}.${pi === 3 ? 'jpg' : 'png'}`}
+										alt=""
+										loading="lazy"
+									/>
+								</figure>
+							))
+						: layout.map((pos) => (
+								<figure
+									class="profile__photo"
+									style={`top:${pos.top}%;left:${pos.left}%;--photo-scale:${pos.scale};--photo-rotate:${pos.rotate}deg;--photo-delay:${0}s;`}
+								>
+									<div class="profile__photo-placeholder"></div>
+								</figure>
+							))}
+				</div>
 
-      <ul class="intel-board__notes">
-        {panel.notes.map((item) => (
-          <li>{item}</li>
-        ))}
-      </ul>
-    </article>
-  ))}
+				<div class="profile__content">
+					<div class="profile__hero" style={`--char-count:${person.data.name.length};`}>
+						{person.data.name.split('').map((char) => (
+							<span class="profile__hero-char">{char}</span>
+						))}
+					</div>
+
+					<div class="profile__meta">
+						<span class="profile__meta-sub">{person.data.subtitle}</span>
+						<span class="profile__meta-divider" aria-hidden="true"></span>
+						<span class="profile__meta-sub">{person.data.subsubtitle}</span>
+					</div>
+
+					<div class="profile__tags">
+						{person.data.tags.map((tag, ti) => (
+							<span class="profile__tag" style={`--tag-delay:${ti * 0.06}s;`}>{tag}</span>
+						))}
+					</div>
+
+					<ul class="profile__notes">
+						{person.data.notes.map((note, ni) => (
+							<li class="profile__note" style={`--note-delay:${ni * 0.08}s;`}>{note}</li>
+						))}
+					</ul>
+				</div>
+			</article>
+		);
+	})}
 </aside>
 
 <script>
-  const intelBoard = document.getElementById('intel-board');
-  if (!intelBoard) throw new Error('intel-board not found');
+	const container = document.getElementById('profile');
+	if (!container) throw new Error('profile not found');
 
-  const intelPanels = Array.from(intelBoard.querySelectorAll('.intel-board__panel')) as HTMLElement[];
+	const cards = Array.from(container.querySelectorAll('.profile__card')) as HTMLElement[];
 
-  function activatePanel(index: number) {
-    intelPanels.forEach((panel, panelIndex) => {
-      panel.classList.toggle('is-active', panelIndex === index);
-    });
-  }
+	const MAX_FONT_SIZE = 128;
+	const MIN_FONT_SIZE = 48;
 
-  window.addEventListener('dossier-change', (event) => {
-    const customEvent = event as CustomEvent<{ index: number }>;
-    const nextIndex = customEvent.detail?.index ?? 0;
-    activatePanel(nextIndex);
-  });
+	const PHOTO_BASE_RATIO = 0.18;
+	const PHOTO_MIN_W = 110;
+	const PHOTO_MAX_W = 240;
 
-  activatePanel(0);
+	let activeIndex = 0;
+
+	function setPhotoBaseW() {
+		const raw = container!.clientWidth * PHOTO_BASE_RATIO;
+		const w = Math.min(Math.max(raw, PHOTO_MIN_W), PHOTO_MAX_W);
+		container!.style.setProperty('--photo-base-w', `${w}px`);
+	}
+
+	function setHeroFontSize(card: HTMLElement) {
+		const hero = card.querySelector('.profile__hero') as HTMLElement | null;
+		if (!hero) return;
+
+		const charCount = Number(hero.style.getPropertyValue('--char-count')) || 3;
+		const availableHeight = window.innerHeight - 96;
+		const reserved = 360;
+		const raw = (availableHeight - reserved) / (charCount * 0.82);
+		const fontSize = Math.min(Math.max(raw, MIN_FONT_SIZE), MAX_FONT_SIZE);
+
+		hero.style.setProperty('--hero-font-size', `${fontSize}px`);
+	}
+
+	function activate(index: number) {
+		if (index === activeIndex) return;
+
+		const direction = index > activeIndex ? 'down' : 'up';
+		const oldCard = cards[activeIndex];
+		const newCard = cards[index];
+
+		oldCard.style.setProperty('--exit-dir', direction === 'down' ? '1' : '-1');
+		oldCard.classList.add('is-exiting');
+
+		setHeroFontSize(newCard);
+		newCard.style.setProperty('--exit-dir', direction === 'down' ? '1' : '-1');
+		newCard.classList.remove('is-exiting');
+		oldCard.classList.remove('is-active');
+
+		requestAnimationFrame(() => {
+			newCard.classList.add('is-active');
+		});
+
+		activeIndex = index;
+	}
+
+	window.addEventListener('dossier-change', (event) => {
+		const ev = event as CustomEvent<{ index: number }>;
+		activate(ev.detail?.index ?? 0);
+	});
+
+	window.addEventListener('resize', () => {
+		setPhotoBaseW();
+		setHeroFontSize(cards[activeIndex]);
+	});
+
+	setPhotoBaseW();
+	setHeroFontSize(cards[0]);
 </script>

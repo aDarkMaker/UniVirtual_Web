@@ -1,163 +1,169 @@
 .carousel-container {
-  position: relative;
-  z-index: 12;
-  isolation: isolate;
-  clip-path: inset(0 -9999px);
-  width: 100%;
-  height: calc(100vh - var(--nav-height));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
+	position: relative;
+	z-index: 12;
+	isolation: isolate;
+	clip-path: inset(0 -9999px);
+	width: 100%;
+	height: calc(100vh - var(--nav-height));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: visible;
 }
 
 .carousel-stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 28px 0;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 28px 0;
 }
 
 .carousel-arc {
-  position: relative;
-  width: 300px;
-  height: calc(100% - 56px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
+	position: relative;
+	width: 300px;
+	height: calc(100% - 56px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: visible;
 }
 
 .carousel-card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 280px;
-  height: 180px;
-  margin-top: -90px;
-  margin-left: -140px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
-              0 2px 8px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.4s ease,
-              box-shadow 0.4s ease,
-              border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center center;
-  will-change: transform, opacity;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 280px;
+	height: 180px;
+	margin-top: -90px;
+	margin-left: -140px;
+	background: #ffffff;
+	border-radius: 16px;
+	box-shadow:
+		0 8px 32px rgba(0, 0, 0, 0.12),
+		0 2px 8px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+	border: none;
+	padding: 0;
+	transition:
+		transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+		opacity 0.4s ease,
+		box-shadow 0.4s ease,
+		border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transform-origin: center center;
+	will-change: transform, opacity;
 }
 
 .carousel-card:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.7);
-  outline-offset: 4px;
+	outline: 2px solid rgba(255, 255, 255, 0.7);
+	outline-offset: 4px;
 }
 
 .carousel-card:hover {
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.16),
-              0 4px 16px rgba(0, 0, 0, 0.12);
+	box-shadow:
+		0 12px 48px rgba(0, 0, 0, 0.16),
+		0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .carousel-card.is-center {
-  opacity: 1;
-  box-shadow: 0 18px 64px rgba(0, 0, 0, 0.22),
-              0 8px 28px rgba(0, 0, 0, 0.16);
+	opacity: 1;
+	box-shadow:
+		0 18px 64px rgba(0, 0, 0, 0.22),
+		0 8px 28px rgba(0, 0, 0, 0.16);
 }
 
 .card-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  overflow: visible;
-  background: #ffffff;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 16px;
+	overflow: visible;
+	background: #ffffff;
 }
 
 .card-illustration {
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.45s ease;
+	position: absolute;
+	inset: 0;
+	border-radius: 16px;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: opacity 0.45s ease;
 }
 
 .card-illustration--placeholder {
-  background: #ffffff;
+	background: #ffffff;
 }
 
 .card-character {
-  position: absolute;
-  right: var(--avatar-hidden-right, -8px);
-  top: 50%;
-  transform: translate(var(--avatar-start-x, -28%), var(--avatar-start-y, -34%)) scale(var(--avatar-start-scale, 0.72)) rotate(var(--avatar-start-rotate, -7deg));
-  transform-origin: left center;
-  width: var(--avatar-width, 176px);
-  height: var(--avatar-height, 92%);
-  object-fit: contain;
-  opacity: 0;
-  z-index: 40;
-  transition: right 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.72s cubic-bezier(0.16, 1.08, 0.3, 1),
-              opacity 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+	position: absolute;
+	right: var(--avatar-hidden-right, -8px);
+	top: 50%;
+	transform: translate(var(--avatar-start-x, -28%), var(--avatar-start-y, -34%)) scale(var(--avatar-start-scale, 0.72))
+		rotate(var(--avatar-start-rotate, -7deg));
+	transform-origin: left center;
+	width: var(--avatar-width, 176px);
+	height: var(--avatar-height, 92%);
+	object-fit: contain;
+	opacity: 0;
+	z-index: 40;
+	transition:
+		right 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.72s cubic-bezier(0.16, 1.08, 0.3, 1),
+		opacity 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 
 .card-character--placeholder {
-  background: #000000;
-  border-radius: 0;
+	background: #000000;
+	border-radius: 0;
 }
 
 .carousel-card.is-character-active .card-character {
-  right: var(--avatar-shown-right, -136px);
-  transform: translate(var(--avatar-end-x, 0), var(--avatar-end-y, -50%)) scale(var(--avatar-end-scale, 1)) rotate(var(--avatar-end-rotate, 0deg));
-  opacity: 1;
+	right: var(--avatar-shown-right, -136px);
+	transform: translate(var(--avatar-end-x, 0), var(--avatar-end-y, -50%)) scale(var(--avatar-end-scale, 1)) rotate(var(--avatar-end-rotate, 0deg));
+	opacity: 1;
 }
 
 @media (max-width: 768px) {
-  .carousel-container {
-    width: 100%;
-    height: 188px;
-    align-items: flex-start;
-    justify-content: center;
-    overflow: hidden;
-  }
+	.carousel-container {
+		width: 100%;
+		height: 188px;
+		align-items: flex-start;
+		justify-content: center;
+		overflow: hidden;
+	}
 
-  .carousel-stage {
-    width: 100%;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 14px;
-    padding-bottom: 0;
-  }
+	.carousel-stage {
+		width: 100%;
+		align-items: flex-start;
+		justify-content: center;
+		padding-top: 14px;
+		padding-bottom: 0;
+	}
 
-  .carousel-arc {
-    width: 100%;
-    height: 180px;
-    align-items: flex-start;
-  }
+	.carousel-arc {
+		width: 100%;
+		height: 180px;
+		align-items: flex-start;
+	}
 
-  .carousel-card {
-    top: 0;
-    width: 240px;
-    height: 154px;
-    margin-top: 0;
-    margin-left: -120px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-  }
+	.carousel-card {
+		top: 0;
+		width: 240px;
+		height: 154px;
+		margin-top: 0;
+		margin-left: -120px;
+		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+	}
 
-  .carousel-card.is-center,
-  .carousel-card:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
-  }
+	.carousel-card.is-center,
+	.carousel-card:hover {
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+	}
 
-  .card-character {
-    display: none;
-  }
+	.card-character {
+		display: none;
+	}
 }

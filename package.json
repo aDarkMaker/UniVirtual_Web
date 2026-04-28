@@ -25,6 +25,7 @@
 		"typescript-eslint": "^8.58.2"
 	},
 	"dependencies": {
-		"astro": "^6.1.8"
+		"astro": "^6.1.8",
+		"prettier-plugin-astro": "^0.14.1"
 	}
 }
