@@ -1,7 +1,30 @@
 {
 	"version": "0.2",
 	"language": "en,zh-CN",
-	"files": ["**/*"],
-	"ignorePaths": ["node_modules", "dist", "out", ".astro", "coverage", ".turbo", ".cache", "build", "bun.lock", "*.min.js"],
-	"words": ["astro", "COOLDOWN", "hono", "lanfeng", "subsubtitle", "univirtual", "xiaoke"]
+	"files": [
+		"**/*"
+	],
+	"ignorePaths": [
+		"node_modules",
+		"dist",
+		"out",
+		".astro",
+		"coverage",
+		".turbo",
+		".cache",
+		"build",
+		"bun.lock",
+		"*.min.js"
+	],
+	"words": [
+		"astro",
+		"COOLDOWN",
+		"hono",
+		"lanfeng",
+		"liya",
+		"subsubtitle",
+		"univirtual",
+		"xiaoke",
+		"xiaoxi"
+	]
 }
