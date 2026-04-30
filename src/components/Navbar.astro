@@ -32,8 +32,22 @@ const currentPath = Astro.url.pathname;
     <div class="nav-actions">
       <button class="nav-theme-switch" id="nav-theme-toggle" role="switch" aria-label="切换明暗模式" aria-checked="false">
         <span class="theme-switch-track">
-          <img class="theme-icon theme-icon-moon" src="/icon/moon.svg" alt="" width="16" height="16" />
-          <img class="theme-icon theme-icon-sun" src="/icon/sun.svg" alt="" width="16" height="16" />
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+            <path fill="currentColor" d="M6 1.5a6.5 6.5 0 1 0 8.5 8.5A5.5 5.5 0 0 1 6 1.5z" />
+          </svg>
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+            <circle cx="8" cy="8" r="3" fill="currentColor" />
+            <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <line x1="8" y1="1.5" x2="8" y2="3.2" />
+              <line x1="8" y1="12.8" x2="8" y2="14.5" />
+              <line x1="1.5" y1="8" x2="3.2" y2="8" />
+              <line x1="12.8" y1="8" x2="14.5" y2="8" />
+              <line x1="3.4" y1="3.4" x2="4.6" y2="4.6" />
+              <line x1="11.4" y1="11.4" x2="12.6" y2="12.6" />
+              <line x1="3.4" y1="12.6" x2="4.6" y2="11.4" />
+              <line x1="11.4" y1="4.6" x2="12.6" y2="3.4" />
+            </g>
+          </svg>
         </span>
         <span class="theme-switch-thumb"></span>
       </button>

@@ -1,0 +1,103 @@
+{
+	"updated_at": "2026-04-30T09:18:16.223Z",
+	"user": {
+		"uid": 1577097749,
+		"nickname": "兰枫Official",
+		"face": "https://i2.hdslb.com/bfs/face/b41195fbff8da9ce11aa53c64ef33f9cc58160e0.jpg",
+		"sign": "华中科技大学风蓝动漫社看板娘，诞生自你的祈愿，现在，兰枫来见你啦——  粉丝群：829151984\n商务合作请私信！"
+	},
+	"videos": [
+		{
+			"aid": 116466477172718,
+			"bvid": "BV1FBoXB4E3o",
+			"title": "牵起我的《下等马》，大摇大摆走天下【兰枫翻唱】",
+			"pic": "http://i1.hdslb.com/bfs/archive/734c6cc9eaf448d9f325e24897bc04a36382ee95.jpg",
+			"duration": 191,
+			"play": 0,
+			"created": "1777176023",
+			"description": "马年就要来赛马\n且看兰枫当大侠\n牵起我的下等马\n大摇大摆走天下\n\n演唱：兰枫\n录音：@HkkllkkH \n调音：@阿冰Lance  \n混音：@DJ鱼谷  \n曲绘：夊夊\n后期：Ora_Lan"
+		},
+		{
+			"aid": 116273035938959,
+			"bvid": "BV1A1A3zAE1s",
+			"title": "【兰枫2026.3.22录播】神奇兰枫在哪里",
+			"pic": "http://i0.hdslb.com/bfs/archive/40d7fa215057d7b4e3cf904e2badd0feaf6e50be.jpg",
+			"duration": 7338,
+			"play": 0,
+			"created": "1774186299",
+			"description": "欢迎加入兰枫的有爱小屋：829151984！"
+		},
+		{
+			"aid": 116265939110652,
+			"bvid": "BV1uqAwz2ETN",
+			"title": "后宫百合，绝对不行？似乎可行！【和兰枫一起看】",
+			"pic": "http://i2.hdslb.com/bfs/archive/b101cefbb1e9b1887fbfd0722d9b7b8dc62673c9.jpg",
+			"duration": 646,
+			"play": 0,
+			"created": "1774087230",
+			"description": "这个时候发疑似有点补番的嫌疑吧！（"
+		},
+		{
+			"aid": 116238239927164,
+			"bvid": "BV1R1w7zaEBx",
+			"title": "【华小科x兰枫】天天天国地狱国！",
+			"pic": "http://i1.hdslb.com/bfs/archive/30c9111998ff8a90806af0048921b8780a01a098.jpg",
+			"duration": 229,
+			"play": 0,
+			"created": "1773655168",
+			"description": "本家：制作Aiobahn +81 演唱ななひら、P丸様  BV1QWPqedE89\n模板：@英俊的没腿  \n画师：蟑螂首领小张\n后期：祈_空ral"
+		},
+		{
+			"aid": 116109156024394,
+			"bvid": "BV1VXfHBYETW",
+			"title": "最终鬼畜兰兰枫【华小科×兰枫 新春拜年祭单品】",
+			"pic": "http://i0.hdslb.com/bfs/archive/fe07220ccbc8f07c19412f0fb5faf635d9bc2435.jpg",
+			"duration": 128,
+			"play": 0,
+			"created": "1771732814",
+			"description": "【华小科×兰枫 新春拜年祭单品】\n作者：@时唯余三  \n期待明年也能看到同样精彩的拜年祭w~"
+		}
+	],
+	"dynamics": [
+		{
+			"id_str": "1195450988096389185",
+			"type": "VIDEO",
+			"timestamp": "1777176023",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1194486454377512965",
+			"type": "IMAGE",
+			"timestamp": "1776951450",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/d6f4a480db0734709b1de3b5447bebe91577097749.png",
+				"http://i0.hdslb.com/bfs/new_dyn/922ef7dcdf2319da81838c2f68715a211577097749.jpg"
+			]
+		},
+		{
+			"id_str": "1193966550729621513",
+			"type": "IMAGE",
+			"timestamp": "1776830400",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/ba9662e48c67d8add3c6aec6aeca58161577097749.png"
+			]
+		},
+		{
+			"id_str": "1182610221279739904",
+			"type": "VIDEO",
+			"timestamp": "1774186299",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1182184723160498258",
+			"type": "VIDEO",
+			"timestamp": "1774087230",
+			"content": "",
+			"images": []
+		}
+	]
+}

@@ -1,0 +1,74 @@
+{
+	"updated_at": "2026-04-30T09:18:22.866Z",
+	"user": {
+		"uid": 3494379805215567,
+		"nickname": "交小西Channel",
+		"face": "https://i0.hdslb.com/bfs/face/adcb26ec052a2617631b46e6ddd14f7b88703d38.jpg",
+		"sign": "来自西安交通大学的虚拟主播，交小西！联动/投稿/反馈请私信或联系制作组邮箱：jiaoxiaoxi_chan@163.com"
+	},
+	"videos": [
+		{
+			"aid": 116366954732294,
+			"bvid": "BV1qjDkBuEVJ",
+			"title": "恋爱泡馍OST《长》正式发布！CV名单首次披露~",
+			"pic": "http://i1.hdslb.com/bfs/archive/76c029537db7bc4e4e434cd8ee06fdd0a5338c6a.jpg",
+			"duration": 221,
+			"play": 0,
+			"created": "1775618837",
+			"description": "恋爱泡馍OST《长》正式发布！\n音乐制作：Sansssss在写歌"
+		},
+		{
+			"aid": 115813222712030,
+			"bvid": "BV11ziMBsEky",
+			"title": "【七校联投】期末周？今天不卷了，屑屑！",
+			"pic": "http://i2.hdslb.com/bfs/archive/06b5fe6cf9bdf8becf7f6dd5cbf87ecc7c0a9ba5.jpg",
+			"duration": 245,
+			"play": 0,
+			"created": "1767178822",
+			"description": "原曲：Chilichill-屑屑 BV1NU411S7sx\n策划：@秋韵之岚  \n填词：@秋韵之岚  \n演唱：@华小科Official  @兰枫Official  @交小西Channel  @中南小团子  @溪冉hira  @璃亚Official  @地苓苓Geographie  @关关和婴婴official  \n美术：@鸢泽咕咕  @济济桓给我  @末茗子末 @夊夊-a @_sikR  @LightningRBT  @淗魚  \n视频：@秋韵之岚"
+		}
+	],
+	"dynamics": [
+		{
+			"id_str": "1152542297669238790",
+			"type": "TEXT",
+			"timestamp": "1767185565",
+			"content": "新年快乐[保卫萝卜_笔芯]",
+			"images": []
+		},
+		{
+			"id_str": "1188763844248338456",
+			"type": "IMAGE",
+			"timestamp": "1775619051",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/e45930137b1b8b47b70d482b5ef8ad4b3494379805215567.png"
+			]
+		},
+		{
+			"id_str": "1188762925137920022",
+			"type": "VIDEO",
+			"timestamp": "1775618837",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1188484654160674822",
+			"type": "IMAGE",
+			"timestamp": "1775554047",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/8cf80f67cd13039f5b51a354231129633494379805215567.png"
+			]
+		},
+		{
+			"id_str": "1169809337496895508",
+			"type": "IMAGE",
+			"timestamp": "1771205861",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/100310bfb5758bfb0f460550a4e512f73494379805215567.png"
+			]
+		}
+	]
+}
