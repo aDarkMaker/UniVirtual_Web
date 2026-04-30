@@ -15,6 +15,7 @@ const people = defineCollection({
 		tags: z.array(z.string()).min(3).max(8),
 		notes: z.array(z.string()).min(3).max(8),
 		photos: z.array(z.string()).default([]),
+		bili_uid: z.number().int().positive().optional(),
 	}),
 });
 

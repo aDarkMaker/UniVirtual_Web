@@ -10,12 +10,15 @@
 		"lint:fix": "eslint . --fix",
 		"format": "prettier . --write",
 		"format:check": "prettier . --check",
-		"spellcheck": "cspell \"**/*.{ts,tsx,astro,md,mdx,json,yml,yaml}\""
+		"spellcheck": "cspell \"**/*.{ts,tsx,astro,md,mdx,json,yml,yaml}\"",
+		"bili-login": "bun scripts/bili-login.ts",
+		"fetch-bili": "bun src/scripts/fetch.bili.ts"
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.8",
 		"@eslint/js": "^10.0.1",
 		"cspell": "^10.0.0",
+		"dotenv": "^17.4.2",
 		"eslint": "^10.2.1",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-astro": "^1.7.0",
@@ -25,7 +28,10 @@
 		"typescript-eslint": "^8.58.2"
 	},
 	"dependencies": {
+		"@types/node": "^25.6.0",
+		"@types/qrcode-terminal": "^0.12.2",
 		"astro": "^6.1.8",
-		"prettier-plugin-astro": "^0.14.1"
+		"prettier-plugin-astro": "^0.14.1",
+		"qrcode-terminal": "^0.12.0"
 	}
 }

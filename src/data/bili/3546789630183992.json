@@ -1,0 +1,97 @@
+{
+	"updated_at": "2026-04-30T09:18:14.013Z",
+	"user": {
+		"uid": 3546789630183992,
+		"nickname": "地苓苓Geographie",
+		"face": "https://i2.hdslb.com/bfs/face/330470c081deed63aa4b45d1c51bdb7166c6e854.jpg",
+		"sign": "这里是中国地质大学北京边玩动漫社的虚拟形象地苓苓！请多关照~ 小苓石群：849712820"
+	},
+	"videos": [
+		{
+			"aid": 116034145162719,
+			"bvid": "BV1tAcczPECP",
+			"title": "【惑星ループ（行星环）】地苓苓.ver",
+			"pic": "http://i0.hdslb.com/bfs/archive/2087f76b373f98ca7487da068952f7ae89a4bb80.jpg",
+			"duration": 194,
+			"play": 0,
+			"created": "1770548418",
+			"description": ""
+		},
+		{
+			"aid": 115813222712030,
+			"bvid": "BV11ziMBsEky",
+			"title": "【七校联投】期末周？今天不卷了，屑屑！",
+			"pic": "http://i2.hdslb.com/bfs/archive/06b5fe6cf9bdf8becf7f6dd5cbf87ecc7c0a9ba5.jpg",
+			"duration": 245,
+			"play": 0,
+			"created": "1767178822",
+			"description": "原曲：Chilichill-屑屑 BV1NU411S7sx\n策划：@秋韵之岚  \n填词：@秋韵之岚  \n演唱：@华小科Official  @兰枫Official  @交小西Channel  @中南小团子  @溪冉hira  @璃亚Official  @地苓苓Geographie  @关关和婴婴official  \n美术：@鸢泽咕咕  @济济桓给我  @末茗子末 @夊夊-a @_sikR  @LightningRBT  @淗魚  \n视频：@秋韵之岚"
+		},
+		{
+			"aid": 115525191468763,
+			"bvid": "BV13VCwBeEqn",
+			"title": "【地苓苓录播】2025边玩动漫社秋季迎新晚会",
+			"pic": "http://i1.hdslb.com/bfs/archive/c4d699379fda09508e608ce3c6a72020e3243ca9.jpg",
+			"duration": 3973,
+			"play": 0,
+			"created": "1762775056",
+			"description": "-"
+		},
+		{
+			"aid": 115343745883893,
+			"bvid": "BV1TkxyzXECK",
+			"title": "【地苓苓Geographie一代毕业纪念】",
+			"pic": "http://i0.hdslb.com/bfs/archive/e565c782d1aa55a87a6ce5469da9b857390a4815.jpg",
+			"duration": 193,
+			"play": 0,
+			"created": "1760006150",
+			"description": "“时光流转，愿你与珍爱之人再次重逢”\n——————————————————\n原曲：唤晚风（洛天依）\n视频制作：@黍雲砚    \n封面制作：@海葱有线公司    \n监制：@榛子nico    @fuximiyata    @Cutecat1115    @叁業草  \n特别致谢：@华小科Official    @鸢泽咕咕    @Peyriat    @栀绡_Celia  （排名不分先后）  \n——————————————————\n 岩层记录亿万年光阴，而这段屏幕记忆，是属于我们的独家地质档案\n       "
+		}
+	],
+	"dynamics": [
+		{
+			"id_str": "1194025183507120128",
+			"type": "IMAGE",
+			"timestamp": "1776844052",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/596ceef54e3ec67abedb649c017341f63546789630183992.jpg"
+			]
+		},
+		{
+			"id_str": "1169974165483028481",
+			"type": "IMAGE",
+			"timestamp": "1771244238",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/763fecb4f210d9c08dde54e9bdcee5ba3546789630183992.jpg"
+			]
+		},
+		{
+			"id_str": "1166985641367437346",
+			"type": "VIDEO",
+			"timestamp": "1770548418",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1152513336700567584",
+			"type": "VIDEO",
+			"timestamp": "1767178822",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1148064175829811237",
+			"type": "IMAGE",
+			"timestamp": "1766142921",
+			"content": "",
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/1b4fc3df5a58ef18025490ced515f4993546789630183992.jpg",
+				"http://i0.hdslb.com/bfs/new_dyn/9593caebf1c1fa22c8b53416ccd3da383546789630183992.jpg",
+				"http://i0.hdslb.com/bfs/new_dyn/1f0d428ff0f465e4cb7cc59419787d173546789630183992.jpg",
+				"http://i0.hdslb.com/bfs/new_dyn/68b31932ccba701a029fc37ffb1bca9e3546789630183992.jpg"
+			]
+		}
+	]
+}
