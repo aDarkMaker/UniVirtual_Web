@@ -3,6 +3,7 @@
 	z-index: 5;
 	height: calc(100vh - var(--nav-height));
 	overflow: hidden;
+	contain: layout style;
 }
 
 .profile__card {
@@ -54,6 +55,7 @@
 	inset: 0;
 	pointer-events: none;
 	z-index: 2;
+	contain: layout style;
 }
 
 .profile.is-pending .profile__photo {
@@ -75,10 +77,16 @@
 	z-index: var(--photo-z, 1);
 	width: 180px;
 	transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg));
+	contain: layout paint;
 }
 
 .profile__photo.is-floating {
 	animation: photo-float var(--float-duration, 7s) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+	will-change: transform;
+}
+
+.profile__card.is-active:not(.is-exiting) .profile__photo:not(.is-floating) {
+	will-change: transform, opacity;
 }
 
 .profile__photo:hover {

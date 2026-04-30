@@ -1,16 +1,21 @@
 ---
 import Navbar from '@/components/Navbar.astro';
 import { siteMeta } from '@/lib/site';
+import '@fontsource/syne/700.css';
+import '@fontsource/noto-sans-sc/400.css';
+import '@fontsource/noto-sans-sc/500.css';
 import '@/styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  preloadImages?: string[];
 }
 
 const {
   title = siteMeta.title,
   description = siteMeta.description,
+  preloadImages = [],
 } = Astro.props;
 ---
 
@@ -22,13 +27,9 @@ const {
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/img/favicon.png" type="image/png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=Noto+Sans+SC:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    {preloadImages.map((href) => (
+      <link rel="preload" as="image" href={href} fetchpriority="high" />
+    ))}
     <script is:inline>
       if (localStorage.getItem('theme') === 'light') {
         document.documentElement.classList.add('light');

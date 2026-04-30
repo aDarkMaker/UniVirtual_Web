@@ -1,6 +1,22 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import xiaokeBg from '@/assets/Card/background/background_xiaoke.png';
+import xiaokeAvatar from '@/assets/Card/Avatar/Avatar_xiaoke.png';
+import lanfengBg from '@/assets/Card/background/background_lanfeng.png';
+import lanfengAvatar from '@/assets/Card/Avatar/Avatar_lanfeng.png';
 import '@/styles/card-carousel.css';
+
+interface OptimizedImage {
+  src: string;
+  srcset: string;
+}
+
+async function optimize(meta: ImageMetadata, widths: number[]): Promise<OptimizedImage> {
+  const result = await getImage({ src: meta, format: 'webp', widths, quality: 92 });
+  return { src: result.src, srcset: result.srcSet?.attribute ?? '' };
+}
 
 interface CardItem {
   id: number;
@@ -13,8 +29,8 @@ interface Props {
 }
 
 interface CardType {
-  background?: string;
-  avatar?: string;
+  background?: ImageMetadata;
+  avatar?: ImageMetadata;
   avatarMotion: AvatarMotion;
   usePlaceholder: boolean;
 }
@@ -66,14 +82,14 @@ const lanfengAvatarMotion = {
 
 const cardTypes = {
   xiaoke: {
-    background: '/img/Card/background/background_xiaoke.png',
-    avatar: '/img/Card/Avatar/Avatar_xiaoke.png',
+    background: xiaokeBg,
+    avatar: xiaokeAvatar,
     avatarMotion: xiaokeAvatarMotion,
     usePlaceholder: false,
   },
   lanfeng: {
-    background: '/img/Card/background/background_lanfeng.png',
-    avatar: '/img/Card/Avatar/Avatar_lanfeng.png',
+    background: lanfengBg,
+    avatar: lanfengAvatar,
     avatarMotion: lanfengAvatarMotion,
     usePlaceholder: false,
   },
@@ -97,6 +113,19 @@ const cards: CardItem[] = people.map((person, index) => ({
   title: person.data.name,
   type: person.data.cardType,
 }));
+
+const BG_WIDTHS = [320, 640, 960];
+const AVATAR_WIDTHS = [240, 480];
+
+const cardImages: Partial<Record<keyof typeof cardTypes, { background: OptimizedImage; avatar: OptimizedImage }>> = {};
+for (const [type, def] of Object.entries(cardTypes) as [keyof typeof cardTypes, CardType][]) {
+  if (def.background && def.avatar) {
+    cardImages[type] = {
+      background: await optimize(def.background, BG_WIDTHS),
+      avatar: await optimize(def.avatar, AVATAR_WIDTHS),
+    };
+  }
+}
 ---
 
 <div class="carousel-container">
@@ -106,26 +135,41 @@ const cards: CardItem[] = people.map((person, index) => ({
         (() => {
           const cardType = cardTypes[card.type];
           const avatarMotion = cardType.avatarMotion;
+          const images = cardImages[card.type];
+          const isPriority = index === 0;
+          const loading = isPriority ? 'eager' : 'lazy';
+          const fetchpriority = isPriority ? 'high' : 'auto';
+          const characterStyle = `--avatar-width:${avatarMotion.avatarWidth}px;--avatar-height:${avatarMotion.avatarHeight}%;--avatar-hidden-right:${avatarMotion.avatarHiddenRight}px;--avatar-shown-right:${avatarMotion.avatarShownRight}px;--avatar-start-x:${avatarMotion.avatarStartX}%;--avatar-start-y:${avatarMotion.avatarStartY}%;--avatar-start-scale:${avatarMotion.avatarStartScale};--avatar-start-rotate:${avatarMotion.avatarStartRotate}deg;--avatar-end-x:${avatarMotion.avatarEndX}%;--avatar-end-y:${avatarMotion.avatarEndY}%;--avatar-end-scale:${avatarMotion.avatarEndScale};--avatar-end-rotate:${avatarMotion.avatarEndRotate}deg;`;
           return (
             <button class="carousel-card" data-index={index} data-id={card.id} type="button" aria-label={`选择${card.title}`}>
               <div class="card-content">
-                {cardType.usePlaceholder ? (
+                {cardType.usePlaceholder || !images ? (
                   <>
                     <div class="card-illustration card-illustration--placeholder"></div>
-                    <div
-                      class="card-character card-character--placeholder"
-                      style={`--avatar-width:${avatarMotion.avatarWidth}px;--avatar-height:${avatarMotion.avatarHeight}%;--avatar-hidden-right:${avatarMotion.avatarHiddenRight}px;--avatar-shown-right:${avatarMotion.avatarShownRight}px;--avatar-start-x:${avatarMotion.avatarStartX}%;--avatar-start-y:${avatarMotion.avatarStartY}%;--avatar-start-scale:${avatarMotion.avatarStartScale};--avatar-start-rotate:${avatarMotion.avatarStartRotate}deg;--avatar-end-x:${avatarMotion.avatarEndX}%;--avatar-end-y:${avatarMotion.avatarEndY}%;--avatar-end-scale:${avatarMotion.avatarEndScale};--avatar-end-rotate:${avatarMotion.avatarEndRotate}deg;`}
-                    ></div>
+                    <div class="card-character card-character--placeholder" style={characterStyle}></div>
                   </>
                 ) : (
                   <>
-                    <img class="card-illustration" src={cardType.background} alt={card.title} loading="eager" />
+                    <img
+                      class="card-illustration"
+                      src={images.background.src}
+                      srcset={images.background.srcset}
+                      sizes="(max-width: 768px) 240px, 280px"
+                      alt={card.title}
+                      loading={loading}
+                      fetchpriority={fetchpriority}
+                      decoding="async"
+                    />
                     <img
                       class="card-character"
-                      src={cardType.avatar}
+                      src={images.avatar.src}
+                      srcset={images.avatar.srcset}
+                      sizes="212px"
                       alt=""
-                      loading="eager"
-                      style={`--avatar-width:${avatarMotion.avatarWidth}px;--avatar-height:${avatarMotion.avatarHeight}%;--avatar-hidden-right:${avatarMotion.avatarHiddenRight}px;--avatar-shown-right:${avatarMotion.avatarShownRight}px;--avatar-start-x:${avatarMotion.avatarStartX}%;--avatar-start-y:${avatarMotion.avatarStartY}%;--avatar-start-scale:${avatarMotion.avatarStartScale};--avatar-start-rotate:${avatarMotion.avatarStartRotate}deg;--avatar-end-x:${avatarMotion.avatarEndX}%;--avatar-end-y:${avatarMotion.avatarEndY}%;--avatar-end-scale:${avatarMotion.avatarEndScale};--avatar-end-rotate:${avatarMotion.avatarEndRotate}deg;`}
+                      loading={loading}
+                      fetchpriority={fetchpriority}
+                      decoding="async"
+                      style={characterStyle}
                     />
                   </>
                 )}

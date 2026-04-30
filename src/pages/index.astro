@@ -1,16 +1,36 @@
 ---
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
 import Layout from '@/layouts/Layout.astro';
 import CardCarousel from '@/components/CardCarousel.astro';
 import IntelBoard from '@/components/IntelBoard.astro';
+import xiaokeBg from '@/assets/Card/background/background_xiaoke.png';
+import xiaokeAvatar from '@/assets/Card/Avatar/Avatar_xiaoke.png';
+import lanfengBg from '@/assets/Card/background/background_lanfeng.png';
+import lanfengAvatar from '@/assets/Card/Avatar/Avatar_lanfeng.png';
 
 const people = (await getCollection('people')).sort(
   (a: CollectionEntry<'people'>, b: CollectionEntry<'people'>) => a.data.order - b.data.order,
 );
+
+const cardAssetMap: Record<string, { background: ImageMetadata; avatar: ImageMetadata }> = {
+  xiaoke: { background: xiaokeBg, avatar: xiaokeAvatar },
+  lanfeng: { background: lanfengBg, avatar: lanfengAvatar },
+};
+
+const firstAssets = people[0] ? cardAssetMap[people[0].data.cardType] : undefined;
+const preloadImages: string[] = [];
+
+if (firstAssets) {
+  const bg = await getImage({ src: firstAssets.background, format: 'webp', width: 640, quality: 92 });
+  const avatar = await getImage({ src: firstAssets.avatar, format: 'webp', width: 480, quality: 92 });
+  preloadImages.push(bg.src, avatar.src);
+}
 ---
 
-<Layout>
+<Layout preloadImages={preloadImages}>
   <section class="home-main home-main--investigation">
     <CardCarousel people={people} />
     <IntelBoard people={people} />

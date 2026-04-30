@@ -1,23 +1,52 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import '@/styles/intel-board.css';
 
 interface Props {
 	people: CollectionEntry<'people'>[];
 }
 
+interface OptimizedPhoto {
+	src: string;
+	srcset: string;
+}
+
+const photoModules = import.meta.glob<{ default: ImageMetadata }>(
+	'/src/assets/Photo/**/*.{png,jpg,jpeg,webp}',
+	{ eager: true },
+);
+
+const PHOTO_WIDTHS = [320, 640, 960];
+
+async function resolvePhoto(src: string): Promise<OptimizedPhoto | null> {
+	const meta = photoModules[`/src/assets/Photo/${src}`]?.default;
+	if (!meta) return null;
+	const result = await getImage({ src: meta, format: 'webp', widths: PHOTO_WIDTHS, quality: 92 });
+	return { src: result.src, srcset: result.srcSet?.attribute ?? '' };
+}
+
 const { people } = Astro.props as Props;
+
+const photoMap: Record<string, (OptimizedPhoto | null)[]> = {};
+for (const person of people) {
+	photoMap[person.id] = await Promise.all(person.data.photos.map((src) => resolvePhoto(src)));
+}
 ---
 
 <aside class="profile is-pending" id="profile">
 	{people.map((person, i) => (
 		<article class={`profile__card${i === 0 ? ' is-active' : ''}`} data-profile-index={i}>
 			<div class="profile__photos">
-				{person.data.photos.map((src, pi) => (
-					<figure class="profile__photo" style={`--photo-delay:${pi * 0.12}s;`}>
-						<img src={`/img/Photo/${src}`} alt="" loading="lazy" />
-					</figure>
-				))}
+				{(photoMap[person.id] ?? []).map((photo, pi) => {
+					if (!photo) return null;
+					return (
+						<figure class="profile__photo" style={`--photo-delay:${pi * 0.12}s;`}>
+							<img src={photo.src} srcset={photo.srcset} sizes="320px" alt="" loading="lazy" decoding="async" />
+						</figure>
+					);
+				})}
 			</div>
 
 			<div class="profile__content">
