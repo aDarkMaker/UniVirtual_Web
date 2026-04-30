@@ -14,6 +14,7 @@ const people = defineCollection({
 		cardType: z.enum(['xiaoke', 'lanfeng', 'xiaoxi', 'liya', 'd00']),
 		tags: z.array(z.string()).min(3).max(8),
 		notes: z.array(z.string()).min(3).max(8),
+		photos: z.array(z.string()).default([]),
 	}),
 });
 

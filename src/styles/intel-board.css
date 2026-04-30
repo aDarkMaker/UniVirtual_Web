@@ -58,68 +58,87 @@
 
 .profile__photo {
 	position: absolute;
-	width: calc(var(--photo-base-w, 200px) * var(--photo-scale, 1));
-	transform: translate(-50%, -50%) rotate(var(--photo-rotate, 0deg));
 	margin: 0;
-	padding: 10px 10px 10px 10px;
-	background: var(--color-surface);
-	border: 1px solid var(--color-border);
-	box-shadow: 0 4px 2px rgba(0, 0, 0, 0.15);
+	padding: 7px;
+	background: #fff;
+	border-radius: 3px;
+	box-shadow:
+		0 1px 4px rgba(0, 0, 0, 0.08),
+		0 4px 12px rgba(0, 0, 0, 0.06),
+		0 8px 24px rgba(0, 0, 0, 0.04);
 	opacity: 0;
-	transition:
-		background 0.3s ease,
-		border-color 0.3s ease,
-		box-shadow 0.3s ease;
-} 
+	z-index: var(--photo-z, 1);
+	width: 180px;
+	transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg));
+}
 
-.profile__photo img,
-.profile__photo-placeholder {
+.profile__photo.is-floating {
+	animation: photo-float var(--float-duration, 7s) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.profile__photo:hover {
+	z-index: 100;
+	animation: none;
+	box-shadow:
+		0 2px 8px rgba(0, 0, 0, 0.12),
+		0 6px 20px rgba(0, 0, 0, 0.1),
+		0 12px 32px rgba(0, 0, 0, 0.06);
+	transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg)) scale(1.06);
+}
+
+@keyframes photo-float {
+	0%, 100% {
+		opacity: 0.88;
+		transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg));
+	}
+	20% {
+		opacity: 0.88;
+		transform: translate3d(-50%, calc(-50% - 3px), 0) rotate(calc(var(--photo-rotate, 0deg) - 0.6deg));
+	}
+	50% {
+		opacity: 0.88;
+		transform: translate3d(-50%, calc(-50% + 5px), 0) rotate(calc(var(--photo-rotate, 0deg) + 0.8deg));
+	}
+	70% {
+		opacity: 0.88;
+		transform: translate3d(-50%, calc(-50% + 2px), 0) rotate(calc(var(--photo-rotate, 0deg) + 0.3deg));
+	}
+}
+
+.profile__photo img {
 	display: block;
 	width: 100%;
 	height: auto;
-	object-fit: contain;
-}
-
-.profile__photo-placeholder {
-	aspect-ratio: 4 / 3;
-	background: var(--color-surface-2);
+	border-radius: 2px;
 }
 
 .profile__card.is-exiting .profile__photo {
-	animation: photo-exit 0.35s cubic-bezier(0.4, 0, 1, 1) both;
+	animation: photo-exit 0.3s cubic-bezier(0.4, 0, 1, 1) both;
 }
 
-.profile__card.is-active:not(.is-exiting) .profile__photo {
-	animation: photo-drift 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--photo-delay, 0s) both;
+.profile__card.is-active:not(.is-exiting) .profile__photo:not(.is-floating) {
+	animation: photo-drift 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--photo-delay, 0s) both;
 }
 
 @keyframes photo-drift {
 	0% {
 		opacity: 0;
-		transform: translate(-50%, -50%) rotate(var(--photo-rotate, 0deg)) translateX(40px) scale(0.75);
-		filter: blur(3px);
-	}
-	60% {
-		opacity: 0.85;
-		filter: blur(0);
+		transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg)) translateX(36px);
 	}
 	100% {
-		opacity: 0.82;
-		transform: translate(-50%, -50%) rotate(var(--photo-rotate, 0deg)) translateX(0) scale(1);
-		filter: blur(0);
+		opacity: 0.88;
+		transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg)) translateX(0);
 	}
 }
 
 @keyframes photo-exit {
 	from {
-		opacity: 0.82;
-		transform: translate(-50%, -50%) rotate(var(--photo-rotate, 0deg)) translateX(0) scale(1);
-		filter: blur(0);
+		opacity: 0.88;
+		transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg)) translateX(0);
 	}
 	to {
 		opacity: 0;
-		transform: translate(-50%, -50%) rotate(var(--photo-rotate, 0deg)) translateX(calc(var(--exit-dir, 1) * -30px)) scale(0.75);
-		filter: blur(3px);
+		transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg)) translateX(calc(var(--exit-dir, 1) * -28px));
 	}
 }
 
@@ -314,14 +333,6 @@
 		padding-right: 80px;
 	}
 
-	.profile__photo {
-		padding: 8px 8px 30px 8px;
-	}
-
-	.profile__photo::after {
-		bottom: 25px;
-	}
-
 	.profile__hero {
 		margin-bottom: 26px;
 	}
@@ -362,10 +373,7 @@
 		padding-right: 0;
 	}
 
-	.profile__photos {
-		display: none;
-	}
-
+	.profile__photos,
 	.profile__photo {
 		display: none;
 	}

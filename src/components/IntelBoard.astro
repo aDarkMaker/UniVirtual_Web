@@ -7,106 +7,46 @@ interface Props {
 }
 
 const { people } = Astro.props as Props;
-
-const PHOTO_LAYOUTS = [
-	[
-		{ top: 18, left: 16, rotate: 7, scale: 1.6 },
-		{ top: 34, left: 52, rotate: -2, scale: 1.0 },
-		{ top: 56, left: 20, rotate: -3, scale: 1.2 },
-		{ top: 76, left: 48, rotate: 6, scale: 1.1 },
-	],
-	[
-		{ top: 14, left: 32, rotate: 4, scale: 1.2 },
-		{ top: 44, left: 10, rotate: -6, scale: 1.05 },
-		{ top: 70, left: 40, rotate: 3, scale: 1.1 },
-	],
-	[
-		{ top: 8, left: 24, rotate: -6, scale: 1.1 },
-		{ top: 38, left: 54, rotate: 4, scale: 1.18 },
-		{ top: 64, left: 16, rotate: -4, scale: 1.12 },
-		{ top: 80, left: 56, rotate: 6, scale: 0.94 },
-	],
-	[
-		{ top: 22, left: 8, rotate: 5, scale: 1.15 },
-		{ top: 50, left: 46, rotate: -7, scale: 1.28 },
-	],
-	[
-		{ top: 12, left: 18, rotate: -5, scale: 1.0 },
-		{ top: 32, left: 60, rotate: 4, scale: 1.05 },
-		{ top: 56, left: 28, rotate: 6, scale: 1.15 },
-	],
-	[
-		{ top: 6, left: 44, rotate: -6, scale: 1.05 },
-		{ top: 38, left: 10, rotate: 5, scale: 1.15 },
-		{ top: 60, left: 56, rotate: -4, scale: 1.22 },
-		{ top: 84, left: 26, rotate: 4, scale: 0.9 },
-	],
-	[
-		{ top: 16, left: 34, rotate: 6, scale: 1.25 },
-		{ top: 48, left: 60, rotate: -5, scale: 1.08 },
-		{ top: 74, left: 14, rotate: -3, scale: 1.02 },
-	],
-];
 ---
 
 <aside class="profile" id="profile">
-	{people.map((person, i) => {
-		const layout = PHOTO_LAYOUTS[i % PHOTO_LAYOUTS.length];
+	{people.map((person, i) => (
+		<article class={`profile__card${i === 0 ? ' is-active' : ''}`} data-profile-index={i}>
+			<div class="profile__photos">
+				{person.data.photos.map((src, pi) => (
+					<figure class="profile__photo" style={`--photo-delay:${pi * 0.12}s;`}>
+						<img src={`/img/Photo/${src}`} alt="" loading="lazy" />
+					</figure>
+				))}
+			</div>
 
-		return (
-			<article class={`profile__card${i === 0 ? ' is-active' : ''}`} data-profile-index={i}>
-				<div class="profile__photos">
-					{person.data.cardType === 'xiaoke'
-						? layout.map((pos, pi) => (
-								<figure
-									class="profile__photo"
-									style={`top:${pos.top}%;left:${pos.left}%;--photo-scale:${pos.scale};--photo-rotate:${pos.rotate}deg;--photo-delay:${pi * 0.12}s;`}
-								>
-									<img
-										src={`/img/Photo/xiaoke/${pi + 1}.${pi === 3 ? 'jpg' : 'png'}`}
-										alt=""
-										loading="lazy"
-									/>
-								</figure>
-							))
-						: layout.map((pos) => (
-								<figure
-									class="profile__photo"
-									style={`top:${pos.top}%;left:${pos.left}%;--photo-scale:${pos.scale};--photo-rotate:${pos.rotate}deg;--photo-delay:${0}s;`}
-								>
-									<div class="profile__photo-placeholder"></div>
-								</figure>
-							))}
+			<div class="profile__content">
+				<div class="profile__hero" style={`--char-count:${person.data.name.length};`}>
+					{person.data.name.split('').map((char) => (
+						<span class="profile__hero-char">{char}</span>
+					))}
 				</div>
 
-				<div class="profile__content">
-					<div class="profile__hero" style={`--char-count:${person.data.name.length};`}>
-						{person.data.name.split('').map((char) => (
-							<span class="profile__hero-char">{char}</span>
-						))}
-					</div>
-
-					<div class="profile__meta">
-						<span class="profile__meta-sub">{person.data.subtitle}</span>
-						<span class="profile__meta-divider" aria-hidden="true"></span>
-						<span class="profile__meta-sub">{person.data.subsubtitle}</span>
-					</div>
-
-					<div class="profile__tags">
-						{person.data.tags.map((tag, ti) => (
-							<span class="profile__tag" style={`--tag-delay:${ti * 0.06}s;`}>{tag}</span>
-						))}
-					</div>
-
-					<ul class="profile__notes">
-						{person.data.notes.map((note, ni) => (
-							<li class="profile__note" style={`--note-delay:${ni * 0.08}s;`}>{note}</li>
-						))}
-					</ul>
+				<div class="profile__meta">
+					<span class="profile__meta-sub">{person.data.subtitle}</span>
+					<span class="profile__meta-divider" aria-hidden="true"></span>
+					<span class="profile__meta-sub">{person.data.subsubtitle}</span>
 				</div>
-			</article>
-		);
-	})}
+
+				<div class="profile__tags">
+					{person.data.tags.map((tag, ti) => (
+						<span class="profile__tag" style={`--tag-delay:${ti * 0.06}s;`}>{tag}</span>
+					))}
+				</div>
+
+				<ul class="profile__notes">
+					{person.data.notes.map((note, ni) => (
+						<li class="profile__note" style={`--note-delay:${ni * 0.08}s;`}>{note}</li>
+					))}
+				</ul>
+			</div>
+		</article>
+	))}
 </aside>
 
 <script>
@@ -114,33 +54,87 @@ const PHOTO_LAYOUTS = [
 	if (!container) throw new Error('profile not found');
 
 	const cards = Array.from(container.querySelectorAll('.profile__card')) as HTMLElement[];
+	const navInner = document.querySelector('.nav-inner') as HTMLElement | null;
+	const carouselStage = document.querySelector('.carousel-stage') as HTMLElement | null;
 
 	const MAX_FONT_SIZE = 128;
 	const MIN_FONT_SIZE = 48;
 
-	const PHOTO_BASE_RATIO = 0.18;
-	const PHOTO_MIN_W = 110;
-	const PHOTO_MAX_W = 240;
-
 	let activeIndex = 0;
-
-	function setPhotoBaseW() {
-		const raw = container!.clientWidth * PHOTO_BASE_RATIO;
-		const w = Math.min(Math.max(raw, PHOTO_MIN_W), PHOTO_MAX_W);
-		container!.style.setProperty('--photo-base-w', `${w}px`);
-	}
 
 	function setHeroFontSize(card: HTMLElement) {
 		const hero = card.querySelector('.profile__hero') as HTMLElement | null;
 		if (!hero) return;
-
 		const charCount = Number(hero.style.getPropertyValue('--char-count')) || 3;
 		const availableHeight = window.innerHeight - 96;
 		const reserved = 360;
 		const raw = (availableHeight - reserved) / (charCount * 0.82);
 		const fontSize = Math.min(Math.max(raw, MIN_FONT_SIZE), MAX_FONT_SIZE);
-
 		hero.style.setProperty('--hero-font-size', `${fontSize}px`);
+	}
+
+	function layoutPhotos(card: HTMLElement) {
+		if (!container || !navInner || !carouselStage) return;
+
+		const photosContainer = card.querySelector('.profile__photos') as HTMLElement | null;
+		const contentEl = card.querySelector('.profile__content') as HTMLElement | null;
+		if (!photosContainer || !contentEl) return;
+
+		const photos = Array.from(photosContainer.querySelectorAll('.profile__photo')) as HTMLElement[];
+		if (photos.length === 0) return;
+
+		const containerRect = container.getBoundingClientRect();
+		const navRect = navInner.getBoundingClientRect();
+		const stageRect = carouselStage.getBoundingClientRect();
+		const contentRect = contentEl.getBoundingClientRect();
+
+		const zL = stageRect.right - containerRect.left + 24;
+		const zR = contentRect.left - containerRect.left - 24;
+		const zT = navRect.bottom - containerRect.top + 8;
+		const zB = window.innerHeight - containerRect.top - 8;
+		const zW = zR - zL;
+		const zH = zB - zT;
+
+		if (zW <= 60 || zH <= 60) return;
+
+		const count = photos.length;
+		const cols = Math.ceil(Math.sqrt(count * (zW / zH)));
+		const rows = Math.ceil(count / cols);
+		const cW = zW / cols;
+		const cH = zH / rows;
+
+		photos.forEach((photo, idx) => {
+			const img = photo.querySelector('img');
+			const ar = img && img.complete && img.naturalWidth > 0
+				? img.naturalWidth / img.naturalHeight
+				: 4 / 3;
+
+			const col = idx % cols;
+			const row = Math.floor(idx / cols);
+			const angle = (idx % 3 - 1) * 5;
+			const rad = Math.abs(angle) * Math.PI / 180;
+			const cs = Math.cos(rad);
+			const sn = Math.sin(rad);
+
+			const maxByW = (cW - 20) / (cs + sn / ar);
+			const maxByH = (cH - 20) / (sn + cs / ar);
+			const pw = Math.min(maxByW, maxByH);
+
+			const px = zL + cW * (col + 0.5);
+			const py = zT + cH * (row + 0.5);
+
+			photo.style.width = `${pw}px`;
+			photo.style.top = `${py}px`;
+			photo.style.left = `${px}px`;
+			photo.style.setProperty('--photo-rotate', `${angle}deg`);
+			photo.style.setProperty('--photo-z', String(idx + 1));
+			photo.style.setProperty('--photo-delay', `${0.75 + idx * 0.14}s`);
+			photo.style.setProperty('--float-duration', `${6 + idx * 0.7}s`);
+			photo.classList.remove('is-floating');
+			photo.addEventListener('animationend', () => {
+				photo.classList.add('is-floating');
+			}, { once: true });
+		});
 	}
 
 	function activate(index: number) {
@@ -152,13 +146,17 @@ const PHOTO_LAYOUTS = [
 
 		oldCard.style.setProperty('--exit-dir', direction === 'down' ? '1' : '-1');
 		oldCard.classList.add('is-exiting');
-
-		setHeroFontSize(newCard);
-		newCard.style.setProperty('--exit-dir', direction === 'down' ? '1' : '-1');
-		newCard.classList.remove('is-exiting');
 		oldCard.classList.remove('is-active');
 
+		newCard.style.setProperty('--exit-dir', direction === 'down' ? '1' : '-1');
+		newCard.classList.remove('is-exiting');
+		newCard.querySelectorAll('.profile__photo').forEach((p) => p.classList.remove('is-floating'));
+		newCard.style.display = 'flex';
+
 		requestAnimationFrame(() => {
+			layoutPhotos(newCard);
+			setHeroFontSize(newCard);
+			newCard.style.display = '';
 			newCard.classList.add('is-active');
 		});
 
@@ -170,11 +168,26 @@ const PHOTO_LAYOUTS = [
 		activate(ev.detail?.index ?? 0);
 	});
 
+	let resizeTimer: number;
 	window.addEventListener('resize', () => {
-		setPhotoBaseW();
-		setHeroFontSize(cards[activeIndex]);
+		clearTimeout(resizeTimer);
+		resizeTimer = window.setTimeout(() => {
+			relayout();
+		}, 120);
 	});
 
-	setPhotoBaseW();
+	new ResizeObserver(() => {
+		clearTimeout(resizeTimer);
+		resizeTimer = window.setTimeout(() => {
+			relayout();
+		}, 120);
+	}).observe(container);
+
+	function relayout() {
+		setHeroFontSize(cards[activeIndex]);
+		layoutPhotos(cards[activeIndex]);
+	}
+
 	setHeroFontSize(cards[0]);
+	layoutPhotos(cards[0]);
 </script>
