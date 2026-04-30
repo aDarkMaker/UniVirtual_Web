@@ -98,7 +98,31 @@ const { people } = Astro.props as Props;
 		if (zW <= 60 || zH <= 60) return;
 
 		const count = photos.length;
-		const cols = Math.ceil(Math.sqrt(count * (zW / zH)));
+		const avgAr = photos.reduce((sum, p) => {
+			const img = p.querySelector('img');
+			return sum + (img && img.complete && img.naturalWidth > 0
+				? img.naturalWidth / img.naturalHeight
+				: 4 / 3);
+		}, 0) / count;
+
+		let bestCols = 1;
+		let bestScore = -1;
+		for (let c = 1; c <= count; c++) {
+			const r = Math.ceil(count / c);
+			const cellW = zW / c - 20;
+			const cellH = zH / r - 20;
+			if (cellW <= 0 || cellH <= 0) continue;
+			const photoW = Math.min(cellW, cellH * avgAr);
+			const fillRatio = (photoW * (photoW / avgAr) * count) / (zW * zH);
+			const balance = count / (c * r);
+			const score = fillRatio * (0.5 + 0.5 * balance);
+			if (score > bestScore) {
+				bestScore = score;
+				bestCols = c;
+			}
+		}
+
+		const cols = bestCols;
 		const rows = Math.ceil(count / cols);
 		const cW = zW / cols;
 		const cH = zH / rows;
