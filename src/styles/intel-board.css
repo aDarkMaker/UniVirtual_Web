@@ -56,6 +56,11 @@
 	z-index: 2;
 }
 
+.profile.is-pending .profile__photo {
+	animation: none !important;
+	opacity: 0;
+}
+
 .profile__photo {
 	position: absolute;
 	margin: 0;

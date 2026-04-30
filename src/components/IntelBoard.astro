@@ -9,7 +9,7 @@ interface Props {
 const { people } = Astro.props as Props;
 ---
 
-<aside class="profile" id="profile">
+<aside class="profile is-pending" id="profile">
 	{people.map((person, i) => (
 		<article class={`profile__card${i === 0 ? ' is-active' : ''}`} data-profile-index={i}>
 			<div class="profile__photos">
@@ -190,4 +190,11 @@ const { people } = Astro.props as Props;
 
 	setHeroFontSize(cards[0]);
 	layoutPhotos(cards[0]);
+	requestAnimationFrame(() => {
+		container.classList.remove('is-pending');
+	});
+
+	window.addEventListener('pagehide', () => {
+		container.classList.add('is-pending');
+	});
 </script>
