@@ -1,5 +1,5 @@
 {
-	"updated_at": "2026-04-30T09:18:22.866Z",
+	"updated_at": "2026-05-01T02:59:54.616Z",
 	"user": {
 		"uid": 3494379805215567,
 		"nickname": "交小西Channel",
@@ -37,6 +37,13 @@
 			"images": []
 		},
 		{
+			"id_str": "1197048526897414167",
+			"type": "TEXT",
+			"timestamp": "1777547979",
+			"content": "恋爱泡馍新Demo已上线，欢迎大家品鉴~",
+			"images": []
+		},
+		{
 			"id_str": "1188763844248338456",
 			"type": "IMAGE",
 			"timestamp": "1775619051",
@@ -59,15 +66,6 @@
 			"content": "",
 			"images": [
 				"http://i0.hdslb.com/bfs/new_dyn/8cf80f67cd13039f5b51a354231129633494379805215567.png"
-			]
-		},
-		{
-			"id_str": "1169809337496895508",
-			"type": "IMAGE",
-			"timestamp": "1771205861",
-			"content": "",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/100310bfb5758bfb0f460550a4e512f73494379805215567.png"
 			]
 		}
 	]

@@ -14,7 +14,8 @@
 		".cache",
 		"build",
 		"bun.lock",
-		"*.min.js"
+		"*.min.js",
+		"data"
 	],
 	"words": [
 		"astro",
