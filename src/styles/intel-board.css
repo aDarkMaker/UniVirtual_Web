@@ -100,7 +100,8 @@
 }
 
 @keyframes photo-float {
-	0%, 100% {
+	0%,
+	100% {
 		opacity: 0.88;
 		transform: translate3d(-50%, -50%, 0) rotate(var(--photo-rotate, 0deg));
 	}

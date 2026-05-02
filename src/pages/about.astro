@@ -1,0 +1,341 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import '@/styles/about.css';
+
+const chapters = (await getCollection('about')).sort((a, b) => a.data.order - b.data.order);
+const footstepRotations = [-18, 14, -10, 22, -16];
+---
+
+<Layout title="我们是谁 - Univirtual" description="关于 Univirtual 的故事，从最初的一个念头到一群人的旅程">
+	<div class="about" id="about-page">
+		<header class="about-header">
+			<p class="about-header-eyebrow">ABOUT · 我们是谁</p>
+			<h1 class="about-header-title">
+				关于我们的<span class="about-header-accent">故事</span>
+			</h1>
+		</header>
+
+		<div class="about-viewport" id="about-viewport">
+			<div class="about-panorama" id="about-panorama">
+				{
+					chapters.map((ch, idx) => {
+						const isMilestone = ch.data.type === 'milestone';
+						const cardKlass = isMilestone ? 'about-card--milestone' : `about-card--${ch.data.type}`;
+
+						return (
+							<article class="about-scene" data-chapter-index={idx}>
+								<div class="about-scene-left">
+									<div class={`about-card ${cardKlass}`}>
+										<div class="about-card-shadow" aria-hidden="true" />
+										{isMilestone && <div class="about-card-image" aria-hidden="true" />}
+										<div class="about-card-meta">
+											<span class="about-card-chapter">{ch.data.chapter}</span>
+										</div>
+										<h3 class="about-card-title">{ch.data.title}</h3>
+										<p class="about-card-text">{ch.data.description}</p>
+										{ch.data.script && <p class="about-card-script">— {ch.data.script} —</p>}
+										{!isMilestone && !ch.data.script && <div class="about-card-tagline">{ch.data.chapter.split('·')[0]?.trim()}</div>}
+									</div>
+								</div>
+
+								<div class="about-scene-right">
+									<p class="about-info-meta">{ch.data.chapter}</p>
+									<h2 class="about-info-title">{ch.data.title}</h2>
+									<p class="about-info-desc">{ch.data.description}</p>
+									{ch.data.script && <p class="about-info-script">— {ch.data.script} —</p>}
+								</div>
+							</article>
+						);
+					})
+				}
+			</div>
+
+			<div class="about-footsteps" id="about-footsteps" aria-hidden="true">
+				{footstepRotations.map((rot) => (
+					<svg class="about-footstep" viewBox="0 0 24 24" style={`--rot: ${rot}deg`}>
+						<ellipse cx="12" cy="15" rx="6" ry="5" fill="currentColor" />
+						<ellipse cx="5.5" cy="9" rx="2" ry="2.6" fill="currentColor" />
+						<ellipse cx="11" cy="5" rx="2" ry="2.6" fill="currentColor" />
+						<ellipse cx="17" cy="8" rx="2" ry="2.6" fill="currentColor" />
+						<ellipse cx="20" cy="13" rx="1.6" ry="2.2" fill="currentColor" />
+					</svg>
+				))}
+			</div>
+
+			<aside class="about-hint" id="about-hint" aria-hidden="true">
+				<span>滑动翻阅</span>
+				<span class="about-hint-keys">
+					<span class="about-hint-key">
+						<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="10 4 6 8 10 12"></polyline>
+						</svg>
+					</span>
+					<span class="about-hint-key">
+						<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+							<polyline points="6 4 10 8 6 12"></polyline>
+						</svg>
+					</span>
+				</span>
+			</aside>
+		</div>
+
+		<div class="about-progress" aria-hidden="true">
+			<div class="about-progress-fill" id="about-progress-fill"></div>
+		</div>
+	</div>
+</Layout>
+
+<script>
+	(function () {
+		const panorama = document.getElementById('about-panorama') as HTMLElement;
+		const progressFill = document.getElementById('about-progress-fill') as HTMLElement;
+		const footsteps = document.getElementById('about-footsteps') as HTMLElement;
+		const viewport = document.getElementById('about-viewport') as HTMLElement;
+		const hint = document.getElementById('about-hint') as HTMLElement;
+
+		if (!panorama || !progressFill || !footsteps || !viewport) {
+			return;
+		}
+
+		const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+		const sceneEls = Array.from(panorama.querySelectorAll<HTMLElement>('[data-chapter-index]'));
+		const cardEls = Array.from(panorama.querySelectorAll<HTMLElement>('.about-card'));
+		const shadowEls = Array.from(panorama.querySelectorAll<HTMLElement>('.about-card-shadow'));
+		const rightEls = Array.from(panorama.querySelectorAll<HTMLElement>('.about-scene-right'));
+		const sceneCount = sceneEls.length;
+
+		if (isMobile()) {
+			progressFill.style.width = '0%';
+			cardEls.forEach((c) => {
+				c.style.transform = 'none';
+				c.style.opacity = '1';
+			});
+			shadowEls.forEach((s) => { s.style.opacity = '0.6'; });
+			return;
+		}
+
+		const SCENE_W_RATIO = 1.0;
+		let panX = 0;
+		let vel = 0;
+		let maxX = 0;
+		let animId: number | null = null;
+		let isDragging = false;
+		let dragStartX = 0;
+		let dragStartPan = 0;
+		let lastPtrX = 0;
+		let lastPtrTime = 0;
+		let footstepTimer: number | null = null;
+		let activeIdx = 0;
+
+		function getSceneWidth() {
+			return viewport.clientWidth * SCENE_W_RATIO;
+		}
+
+		function calcMax() {
+			const sw = getSceneWidth();
+			maxX = Math.max(0, (sceneCount - 1) * sw);
+		}
+
+		function clampVal(v: number): number {
+			return Math.max(0, Math.min(maxX, v));
+		}
+
+		function sceneCenter(i: number): number {
+			return i * getSceneWidth();
+		}
+
+		function quintIn(t: number): number {
+			return t * t * t * t * t;
+		}
+
+		function quintOut(t: number): number {
+			return 1 - Math.pow(1 - t, 5);
+		}
+
+		function applyPan(x: number) {
+			panX = clampVal(x);
+			panorama.style.transform = `translateX(${-panX}px)`;
+			updateScene();
+			if (animId === null) startMotion();
+		}
+
+		function updateScene() {
+			const vw = viewport.clientWidth;
+			const sw = getSceneWidth();
+			const viewCenter = panX + vw * 0.38;
+
+			let best = 0;
+			let bestD = Infinity;
+			for (let i = 0; i < sceneCount; i++) {
+				const d = Math.abs(viewCenter - sceneCenter(i));
+				if (d < bestD) { bestD = d; best = i; }
+			}
+
+			if (best !== activeIdx) {
+				const dir: 1 | -1 = best > activeIdx ? 1 : -1;
+				activeIdx = best;
+				footsteps.classList.remove('is-walking', 'is-backward');
+				void footsteps.offsetWidth;
+				if (dir === -1) footsteps.classList.add('is-backward');
+				footsteps.classList.add('is-walking');
+				if (footstepTimer !== null) clearTimeout(footstepTimer);
+				footstepTimer = window.setTimeout(() => {
+					footsteps.classList.remove('is-walking', 'is-backward');
+					footstepTimer = null;
+				}, 1300);
+			}
+
+			progressFill.style.width = maxX > 0 ? `${(panX / maxX) * 100}%` : '0%';
+
+			for (let i = 0; i < sceneCount; i++) {
+				const sc = sceneCenter(i);
+				const raw = (viewCenter - sc) / sw;
+
+				let cardT: number;
+				let textT: number;
+				let scaleVal: number;
+
+				if (Math.abs(raw) <= 0.5) {
+					cardT = 0;
+					textT = 0;
+					scaleVal = 1;
+				} else if (raw > 0.5) {
+					const t = Math.min(1, (raw - 0.5) / 0.65);
+					cardT = quintIn(t);
+					textT = Math.min(1, (raw - 0.3) / 0.55);
+					scaleVal = 1 - 0.12 * t;
+				} else {
+					const t = Math.min(1, (-raw - 0.5) / 0.65);
+					cardT = quintIn(t);
+					textT = Math.min(1, (-raw - 0.3) / 0.55);
+					scaleVal = 1 - 0.12 * t;
+				}
+
+				const angle = -75 * cardT;
+				const lift = 40 * cardT;
+				const cardOpacity = cardT > 0.7 ? 1 - (cardT - 0.7) / 0.3 : 1;
+
+				const card = cardEls[i];
+				if (card) {
+					card.style.transform = `rotateX(${angle}deg) translateY(${lift}px) scale(${scaleVal})`;
+					card.style.opacity = String(cardOpacity);
+				}
+
+				const shadow = shadowEls[i];
+				if (shadow) {
+					shadow.style.opacity = String(cardT < 0.1 ? 0.6 : 0.6 * (1 - cardT));
+				}
+
+				const right = rightEls[i];
+				if (!right) continue;
+				const kids = Array.from(right.children) as HTMLElement[];
+
+				const textOp = 1 - quintOut(textT);
+				const dir = raw >= 0 ? -1 : 1;
+				const slideX = dir * textT * 32;
+
+				for (let j = 0; j < kids.length; j++) {
+					const k = kids[j]!;
+					k.style.transform = `translateX(${slideX}px)`;
+					k.style.opacity = String(textOp);
+				}
+			}
+		}
+
+		function tick() {
+			vel *= 0.95;
+			if (Math.abs(vel) < 0.3) { vel = 0; animId = null; return; }
+			panX = clampVal(panX + vel);
+			panorama.style.transform = `translateX(${-panX}px)`;
+			updateScene();
+			animId = requestAnimationFrame(tick);
+		}
+
+		function startMotion() {
+			if (animId !== null) return;
+			animId = requestAnimationFrame(tick);
+		}
+
+		let userInteracted = false;
+		function fadeHint() {
+			if (userInteracted) return;
+			userInteracted = true;
+			hint?.classList.add('is-faded');
+		}
+
+		viewport.addEventListener('wheel', (e: WheelEvent) => {
+			if (isMobile()) return;
+			e.preventDefault();
+			if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
+			vel = 0;
+			applyPan(panX + e.deltaY * 0.8);
+			fadeHint();
+		}, { passive: false });
+
+		viewport.addEventListener('pointerdown', (e) => {
+			if (isMobile()) return;
+			if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
+			vel = 0;
+			isDragging = true;
+			dragStartX = e.clientX;
+			dragStartPan = panX;
+			lastPtrX = e.clientX;
+			lastPtrTime = Date.now();
+			viewport.setPointerCapture(e.pointerId);
+		});
+
+		viewport.addEventListener('pointermove', (e) => {
+			if (!isDragging) return;
+			const dx = dragStartX - e.clientX;
+			panX = clampVal(dragStartPan + dx);
+			panorama.style.transform = `translateX(${-panX}px)`;
+			updateScene();
+			lastPtrX = e.clientX;
+			lastPtrTime = Date.now();
+		});
+
+		function endDrag() {
+			if (!isDragging) return;
+			isDragging = false;
+			const dt = Math.max(1, Date.now() - lastPtrTime);
+			const dx = dragStartX - lastPtrX;
+			vel = (dx / dt) * 12;
+			vel = Math.max(-52, Math.min(52, vel));
+			if (Math.abs(vel) > 0.5) startMotion();
+			if (!userInteracted) fadeHint();
+		}
+
+		viewport.addEventListener('pointerup', endDrag);
+		viewport.addEventListener('pointercancel', endDrag);
+
+		window.addEventListener('keydown', (e) => {
+			if (isMobile()) return;
+			const step = getSceneWidth();
+			if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+				e.preventDefault();
+				if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
+				vel = 0;
+				applyPan(panX + step);
+				fadeHint();
+			} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+				e.preventDefault();
+				if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
+				vel = 0;
+				applyPan(panX - step);
+				fadeHint();
+			}
+		});
+
+		window.addEventListener('resize', () => {
+			calcMax();
+			panX = clampVal(panX);
+			panorama.style.transform = `translateX(${-panX}px)`;
+			updateScene();
+		});
+
+		calcMax();
+		updateScene();
+	})();
+</script>

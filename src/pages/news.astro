@@ -1,0 +1,483 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { buildFeed } from '@/lib/feed';
+import { timeAgo, formatDuration, type RichNode } from '@/lib/feed-format';
+import '@/styles/feed.css';
+
+const all = buildFeed();
+const PAGE = 5;
+const initial = all.slice(0, PAGE);
+const counts = {
+  all: all.length,
+  video: all.filter((i) => i.kind === 'video').length,
+  dynamic: all.filter((i) => i.kind !== 'video').length,
+};
+
+const liveStatusLabel: Record<'living' | 'preview' | 'ended', string> = {
+  living: '直播中',
+  preview: '直播预约',
+  ended: '直播回放',
+};
+
+function richClass(kind: RichNode['kind']): string {
+  if (kind === 'at') return 'feed-rich feed-rich--at';
+  if (kind === 'topic') return 'feed-rich feed-rich--topic';
+  if (kind === 'link') return 'feed-rich feed-rich--link';
+  if (kind === 'emoji') return 'feed-rich feed-rich--emoji';
+  return 'feed-rich';
+}
+
+const SSR_COLS = 3;
+const ssrColumns: (typeof initial)[] = Array.from({ length: SSR_COLS }, () => []);
+initial.forEach((item, i) => ssrColumns[i % SSR_COLS]!.push(item));
+---
+
+<Layout title="动态资讯 - Univirtual" description="关注各位虚拟主播的最新动态">
+  <div class="feed-page" id="feed-page">
+    <header class="feed-hero">
+      <p class="feed-hero-eyebrow">FEED · 动态资讯</p>
+      <h1 class="feed-hero-title">来自她们的<span class="feed-hero-accent">最新足迹</span></h1>
+      <p class="feed-hero-meta">{counts.video} 个视频 · {counts.dynamic} 条动态</p>
+    </header>
+
+    <nav class="feed-tabs" id="feed-filters">
+      <button class="feed-tab is-active" data-filter="all" type="button">
+        全部<span class="feed-tab-count">{counts.all}</span>
+      </button>
+      <button class="feed-tab" data-filter="video" type="button">
+        视频<span class="feed-tab-count">{counts.video}</span>
+      </button>
+      <button class="feed-tab" data-filter="dynamic" type="button">
+        动态<span class="feed-tab-count">{counts.dynamic}</span>
+      </button>
+    </nav>
+
+    <div class="feed-masonry" id="feed-grid" data-cols={SSR_COLS}>
+      {ssrColumns.map((col) => (
+        <div class="feed-col">
+          {col.map((item) => (
+            <article class="feed-item" data-kind={item.kind}>
+              <a
+                class={item.kind === 'video' ? 'feed-card feed-card--video' : 'feed-card feed-card--dynamic'}
+                href={item.link}
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="feed-byline">
+                  <span class="feed-face-wrap">
+                    <img class="feed-face" src={item.face} alt={item.nickname} loading="lazy" referrerpolicy="no-referrer" />
+                  </span>
+                  <span class="feed-name">{item.nickname}</span>
+                  <span class="feed-time">{timeAgo(item.timestamp)}</span>
+                </div>
+
+                {item.kind === 'video' && (
+                  <>
+                    <div class="feed-cover feed-cover--video">
+                      <img src={item.cover} alt={item.title} loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                      <span class="feed-duration">{formatDuration(item.duration!)}</span>
+                    </div>
+                    <p class="feed-card-title">{item.title}</p>
+                  </>
+                )}
+
+                {item.kind !== 'video' && item.dynamicTitle && (
+                  <p class="feed-dynamic-heading">{item.dynamicTitle}</p>
+                )}
+
+                {item.kind !== 'video' && (item.rich || item.content) && (
+                  <p class="feed-dynamic-text">
+                    {item.rich
+                      ? item.rich.map((n) =>
+                          n.kind === 'br' ? <br /> : n.kind === 'emoji' && n.emoji ? (
+                            <img class="feed-emoji" src={n.emoji} alt={n.text} referrerpolicy="no-referrer" />
+                          ) : (
+                            <span class={richClass(n.kind)}>{n.text}</span>
+                          ),
+                        )
+                      : item.content}
+                  </p>
+                )}
+
+                {item.kind === 'dynamic_image' && item.images && item.images.length > 0 && (
+                  <div class={`feed-images images-${Math.min(item.images.length, 4)}`}>
+                    {item.images.slice(0, 4).map((src) => (
+                      <img src={src} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                    ))}
+                  </div>
+                )}
+
+                {item.kind === 'dynamic_live' && item.live && (
+                  <div class={`feed-live status-${item.live.status}`}>
+                    {item.live.cover && (
+                      <div class="feed-live-cover">
+                        <img src={item.live.cover} alt={item.live.title} loading="lazy" referrerpolicy="no-referrer" />
+                        <span class="feed-live-tag">{liveStatusLabel[item.live.status]}</span>
+                      </div>
+                    )}
+                    <p class="feed-live-title">{item.live.title || '直播间'}</p>
+                    {item.live.area && <p class="feed-live-area">{item.live.area}</p>}
+                  </div>
+                )}
+
+                {item.kind === 'dynamic_forward' && item.forward && (
+                  <div class="feed-forward">
+                    <div class="feed-forward-author">
+                      @<span class="feed-forward-name">{item.forward.nickname || '原作者'}</span>
+                      {item.forward.deleted && <span class="feed-forward-deleted">（已删除）</span>}
+                    </div>
+                    {item.forward.title && <p class="feed-forward-title">{item.forward.title}</p>}
+                    {item.forward.content && <p class="feed-forward-text">{item.forward.content}</p>}
+                    {item.forward.cover && (
+                      <div class="feed-forward-cover">
+                        <img src={item.forward.cover} alt="" loading="lazy" referrerpolicy="no-referrer" />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </a>
+            </article>
+          ))}
+        </div>
+      ))}
+    </div>
+
+    <div class="feed-sentinel" id="feed-sentinel" aria-hidden="true"></div>
+
+    <div class="feed-footer" id="feed-footer">
+      {all.length <= PAGE && <p class="feed-no-more">— 没有更多啦 —</p>}
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ feedData: all, pageSize: PAGE }}>
+  window.__FEED__ = { items: feedData, page: pageSize };
+</script>
+
+<script>
+  import {
+    timeAgo,
+    formatDuration,
+    escapeHtml,
+    type FeedItem,
+    type RichNode,
+  } from '@/lib/feed-format';
+
+  declare global {
+    interface Window {
+      __FEED__: { items: FeedItem[]; page: number };
+    }
+  }
+
+  const liveStatusLabel = {
+    living: '直播中',
+    preview: '直播预约',
+    ended: '直播回放',
+  } as const;
+
+  function init() {
+    const root = document.getElementById('feed-page');
+    if (!root) return;
+    const grid = document.getElementById('feed-grid')!;
+    const footer = document.getElementById('feed-footer')!;
+    const sentinel = document.getElementById('feed-sentinel')!;
+    const filters = document.getElementById('feed-filters')!;
+    const { items, page } = window.__FEED__;
+
+    let activeFilter: 'all' | 'video' | 'dynamic' = 'all';
+    let shown = page;
+    let loading = false;
+    let cols: HTMLElement[] = [];
+
+    const colCount = () => {
+      const w = window.innerWidth;
+      if (w <= 540) return 1;
+      const padX = Math.min(64, Math.max(24, w * 0.04)) * 2;
+      const usable = w - padX;
+      const minColW = 300;
+      const n = Math.floor(usable / minColW);
+      return Math.max(1, Math.min(5, n));
+    };
+
+    const filtered = (): FeedItem[] => {
+      if (activeFilter === 'all') return items;
+      if (activeFilter === 'video') return items.filter((i) => i.kind === 'video');
+      return items.filter((i) => i.kind !== 'video');
+    };
+
+    function richClass(kind: RichNode['kind']): string {
+      if (kind === 'at') return 'feed-rich feed-rich--at';
+      if (kind === 'topic') return 'feed-rich feed-rich--topic';
+      if (kind === 'link') return 'feed-rich feed-rich--link';
+      if (kind === 'emoji') return 'feed-rich feed-rich--emoji';
+      return 'feed-rich';
+    }
+
+    function richHtml(nodes: RichNode[]): string {
+      return nodes
+        .map((n) => {
+          if (n.kind === 'br') return '<br />';
+          if (n.kind === 'emoji' && n.emoji) {
+            return `<img class="feed-emoji" src="${escapeHtml(n.emoji)}" alt="${escapeHtml(n.text)}" referrerpolicy="no-referrer" />`;
+          }
+          return `<span class="${richClass(n.kind)}">${escapeHtml(n.text)}</span>`;
+        })
+        .join('');
+    }
+
+    function bylineHtml(item: FeedItem): string {
+      return `<div class="feed-byline">
+        <span class="feed-face-wrap"><img class="feed-face" src="${escapeHtml(item.face)}" alt="${escapeHtml(item.nickname)}" loading="lazy" referrerpolicy="no-referrer" /></span>
+        <span class="feed-name">${escapeHtml(item.nickname)}</span>
+        <span class="feed-time">${timeAgo(item.timestamp)}</span>
+      </div>`;
+    }
+
+    function dynamicTextHtml(item: FeedItem): string {
+      if (item.rich && item.rich.length) {
+        return `<p class="feed-dynamic-text">${richHtml(item.rich)}</p>`;
+      }
+      if (item.content) {
+        return `<p class="feed-dynamic-text">${escapeHtml(item.content)}</p>`;
+      }
+      return '';
+    }
+
+    function dynamicHeadingHtml(item: FeedItem): string {
+      if (!item.dynamicTitle) return '';
+      return `<p class="feed-dynamic-heading">${escapeHtml(item.dynamicTitle)}</p>`;
+    }
+
+    function imagesHtml(images: string[]): string {
+      if (!images.length) return '';
+      return `<div class="feed-images images-${Math.min(images.length, 4)}">${images
+        .slice(0, 4)
+        .map(
+          (src) =>
+            `<img src="${escapeHtml(src)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />`,
+        )
+        .join('')}</div>`;
+    }
+
+    function liveHtml(item: FeedItem): string {
+      if (!item.live) return '';
+      const cover = item.live.cover
+        ? `<div class="feed-live-cover">
+            <img src="${escapeHtml(item.live.cover)}" alt="${escapeHtml(item.live.title)}" loading="lazy" referrerpolicy="no-referrer" />
+            <span class="feed-live-tag">${liveStatusLabel[item.live.status]}</span>
+          </div>`
+        : '';
+      const area = item.live.area
+        ? `<p class="feed-live-area">${escapeHtml(item.live.area)}</p>`
+        : '';
+      return `<div class="feed-live status-${item.live.status}">
+        ${cover}
+        <p class="feed-live-title">${escapeHtml(item.live.title || '直播间')}</p>
+        ${area}
+      </div>`;
+    }
+
+    function forwardHtml(item: FeedItem): string {
+      if (!item.forward) return '';
+      const f = item.forward;
+      const title = f.title ? `<p class="feed-forward-title">${escapeHtml(f.title)}</p>` : '';
+      const text = f.content ? `<p class="feed-forward-text">${escapeHtml(f.content)}</p>` : '';
+      const cover = f.cover
+        ? `<div class="feed-forward-cover"><img src="${escapeHtml(f.cover)}" alt="" loading="lazy" referrerpolicy="no-referrer" /></div>`
+        : '';
+      const deleted = f.deleted ? '<span class="feed-forward-deleted">（已删除）</span>' : '';
+      return `<div class="feed-forward">
+        <div class="feed-forward-author">@<span class="feed-forward-name">${escapeHtml(f.nickname || '原作者')}</span>${deleted}</div>
+        ${title}
+        ${text}
+        ${cover}
+      </div>`;
+    }
+
+    function videoBodyHtml(item: FeedItem): string {
+      return `<div class="feed-cover feed-cover--video">
+          <img src="${escapeHtml(item.cover ?? '')}" alt="${escapeHtml(item.title ?? '')}" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+          <span class="feed-duration">${formatDuration(item.duration ?? 0)}</span>
+        </div>
+        <p class="feed-card-title">${escapeHtml(item.title ?? '')}</p>`;
+    }
+
+    function renderCard(item: FeedItem): string {
+      const klass =
+        item.kind === 'video' ? 'feed-card feed-card--video' : 'feed-card feed-card--dynamic';
+      let body = '';
+      if (item.kind === 'video') body = videoBodyHtml(item);
+      else if (item.kind === 'dynamic_image') body = imagesHtml(item.images ?? []);
+      else if (item.kind === 'dynamic_live') body = liveHtml(item);
+      else if (item.kind === 'dynamic_forward') body = forwardHtml(item);
+
+      const heading = item.kind !== 'video' ? dynamicHeadingHtml(item) : '';
+      const text = item.kind !== 'video' ? dynamicTextHtml(item) : '';
+
+      return `<article class="feed-item" data-kind="${item.kind}">
+        <a class="${klass}" href="${escapeHtml(item.link)}" target="_blank" rel="noopener">
+          ${bylineHtml(item)}
+          ${heading}
+          ${text}
+          ${body}
+        </a>
+      </article>`;
+    }
+
+    function applyNaturalRatio(el: HTMLImageElement) {
+      const parent = el.parentElement;
+      if (parent?.classList.contains('images-1') && el.naturalWidth && el.naturalHeight) {
+        parent.style.aspectRatio = `${el.naturalWidth} / ${el.naturalHeight}`;
+      }
+    }
+
+    function attachLoaders(scope: HTMLElement) {
+      scope.querySelectorAll('img').forEach((img) => {
+        const el = img as HTMLImageElement;
+        if (el.dataset.loaderBound === '1') return;
+        el.dataset.loaderBound = '1';
+        if (el.complete && el.naturalWidth > 0) {
+          applyNaturalRatio(el);
+          el.classList.add('is-loaded');
+        } else {
+          el.addEventListener(
+            'load',
+            () => {
+              applyNaturalRatio(el);
+              el.classList.add('is-loaded');
+            },
+            { once: true },
+          );
+          el.addEventListener('error', () => el.classList.add('is-loaded'), { once: true });
+        }
+      });
+    }
+
+    function buildCols(n: number) {
+      grid.innerHTML = '';
+      cols = [];
+      for (let i = 0; i < n; i++) {
+        const col = document.createElement('div');
+        col.className = 'feed-col';
+        grid.appendChild(col);
+        cols.push(col);
+      }
+      grid.dataset.cols = String(n);
+    }
+
+    function shortestCol(): HTMLElement {
+      let target = cols[0]!;
+      let min = target.getBoundingClientRect().height;
+      for (let i = 1; i < cols.length; i++) {
+        const h = cols[i]!.getBoundingClientRect().height;
+        if (h < min - 0.5) {
+          min = h;
+          target = cols[i]!;
+        }
+      }
+      return target;
+    }
+
+    function appendItem(item: FeedItem) {
+      const target = shortestCol();
+      target.insertAdjacentHTML('beforeend', renderCard(item));
+      attachLoaders(target);
+    }
+
+    function distribute(list: FeedItem[]) {
+      buildCols(colCount());
+      list.forEach(appendItem);
+    }
+
+    function setFooter(state: 'loading' | 'done' | 'idle') {
+      if (state === 'loading') footer.innerHTML = '<p class="feed-loading">加载中…</p>';
+      else if (state === 'done') footer.innerHTML = '<p class="feed-no-more">— 没有更多啦 —</p>';
+      else footer.innerHTML = '';
+    }
+
+    function appendNext() {
+      if (loading) return;
+      const list = filtered();
+      if (shown >= list.length) {
+        setFooter('done');
+        return;
+      }
+      loading = true;
+      setFooter('loading');
+      const next = list.slice(shown, shown + page);
+      next.forEach(appendItem);
+      shown += next.length;
+      loading = false;
+      setFooter(shown >= list.length ? 'done' : 'idle');
+    }
+
+    function rerender() {
+      const list = filtered();
+      shown = Math.min(page, list.length);
+      distribute(list.slice(0, shown));
+      setFooter(shown >= list.length ? 'done' : 'idle');
+    }
+
+    rerender();
+
+    filters.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.feed-tab');
+      if (!btn) return;
+      const next = (btn.dataset.filter ?? 'all') as typeof activeFilter;
+      if (next === activeFilter) return;
+      filters.querySelectorAll('.feed-tab').forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      activeFilter = next;
+      rerender();
+      root.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    let resizeTimer: number | undefined;
+    let lastCols = colCount();
+    window.addEventListener('resize', () => {
+      const next = colCount();
+      if (next === lastCols) return;
+      lastCols = next;
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        const list = filtered().slice(0, shown);
+        distribute(list);
+      }, 120);
+    });
+
+    const isMobile = () => window.matchMedia('(max-width: 540px)').matches;
+    let triggering = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (triggering) return;
+        if (!entries[0]?.isIntersecting) return;
+        const list = filtered();
+        if (shown >= list.length) return;
+        triggering = true;
+        appendNext();
+        observer.unobserve(sentinel);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            triggering = false;
+            observer.observe(sentinel);
+          });
+        });
+      },
+      { root: isMobile() ? null : root, rootMargin: '400px 0px' },
+    );
+    observer.observe(sentinel);
+
+    root.addEventListener('scroll', () => {
+      if (triggering) return;
+      const list = filtered();
+      if (shown >= list.length) return;
+      const sRect = sentinel.getBoundingClientRect();
+      const rRect = root.getBoundingClientRect();
+      if (sRect.top - rRect.top < rRect.height + 400) {
+        appendNext();
+      }
+    });
+  }
+
+  init();
+</script>

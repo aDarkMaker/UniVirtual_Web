@@ -1,5 +1,5 @@
 {
-	"updated_at": "2026-04-30T09:18:16.223Z",
+	"updated_at": "2026-05-02T02:59:34.164Z",
 	"user": {
 		"uid": 1577097749,
 		"nickname": "兰枫Official",
@@ -61,16 +61,75 @@
 	"dynamics": [
 		{
 			"id_str": "1195450988096389185",
-			"type": "VIDEO",
 			"timestamp": "1777176023",
+			"type": "VIDEO",
 			"content": "",
 			"images": []
 		},
 		{
 			"id_str": "1194486454377512965",
-			"type": "IMAGE",
 			"timestamp": "1776951450",
-			"content": "",
+			"type": "IMAGE",
+			"content": "风蓝动漫社第十五届嘉年华，堂堂发布！\n时间为4.25日本周六晚18:00准时开始\n地点为紫菘学生活动中心三楼文艺展演厅\n这里有精彩纷呈的节目desu\n……\n你想要的，这里都有！\n期待大家一起来玩！\n",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "风蓝动漫社第十五届嘉年华，堂堂发布！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "时间为4.25日本周六晚18:00准时开始"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "地点为紫菘学生活动中心三楼文艺展演厅"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "这里有精彩纷呈的节目desu"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "……"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "你想要的，这里都有！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "期待大家一起来玩！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"title": "风蓝动漫社第十五届嘉年华，堂堂发布！",
 			"images": [
 				"http://i0.hdslb.com/bfs/new_dyn/d6f4a480db0734709b1de3b5447bebe91577097749.png",
 				"http://i0.hdslb.com/bfs/new_dyn/922ef7dcdf2319da81838c2f68715a211577097749.jpg"
@@ -78,26 +137,312 @@
 		},
 		{
 			"id_str": "1193966550729621513",
-			"type": "IMAGE",
 			"timestamp": "1776830400",
-			"content": "",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/ba9662e48c67d8add3c6aec6aeca58161577097749.png"
-			]
+			"type": "IMAGE",
+			"content": "＞灵连蜷兮既留，烂昭昭兮未央。蹇将憺兮寿宫，与日月兮齐光。<\n传说，昔有云梦之神曾随雨起舞，袖中乾坤百宝袋落至水中，其中的星宿信物尽数散开，以南北为界，将江流分别染成玄色与赤色。\n时过境迁，拾得信物而来的信使们共赴盛宴，她们将凭信物凝愿，分玄赤两色，一决高下。\n今日，邀您坐观赤玄对决，见证星宿的传说连缀长江，共赴这江城学园联展的【江韵揽星，风华青夏】！！\n▽【2.0晚会节目征集】\n还记得曾与之共鸣的舞台吗？是洋溢青春节奏的舞步，是倾注心声的歌唱，是与角色融为一体的精彩演绎——再次同聚江城学园FES晚会吧！汇聚学园的千万目光，同贺今夜盛大的狂欢吧！\n【征集类型】不限类型。\n【征集群】1101129541\n【征集截止时间】5.10 报满为止\n▽【2.0摊位征集】\n【摊位内容】不限类型\n【摊主群】1087888028\n【截止时间】招满30摊位为止\n▽【2.0创意企划专场】\n你是否已经厌倦了传统漫展上的千篇一律？是否有很多想在漫展上整的小巧思？来设计你的企划吧！\n活动企划设计书包括：活动主题、流程规划、初步预算等。\n无论是精巧的互动游戏还是整活！一旦通过即可获得启动资金，与我们携手，将你的创意变为激动人心的现实！\n企划书请发送到官方邮箱：q505667488@gmail.com\n【截止时间】2026年5月10日 24:00\n",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "＞灵连蜷兮既留，烂昭昭兮未央。蹇将憺兮寿宫，与日月兮齐光。<"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "传说，昔有云梦之神曾随雨起舞，袖中乾坤百宝袋落至水中，其中的星宿信物尽数散开，以南北为界，将江流分别染成玄色与赤色。"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "时过境迁，拾得信物而来的信使们共赴盛宴，她们将凭信物凝愿，分玄赤两色，一决高下。"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "今日，邀您坐观赤玄对决，见证星宿的传说连缀长江，共赴这江城学园联展的【江韵揽星，风华青夏】！！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "▽【2.0晚会节目征集】"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "还记得曾与之共鸣的舞台吗？是洋溢青春节奏的舞步，是倾注心声的歌唱，是与角色融为一体的精彩演绎——再次同聚江城学园FES晚会吧！汇聚学园的千万目光，同贺今夜盛大的狂欢吧！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【征集类型】不限类型。"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【征集群】1101129541"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【征集截止时间】5.10 报满为止"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "▽【2.0摊位征集】"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【摊位内容】不限类型"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【摊主群】1087888028"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【截止时间】招满30摊位为止"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "▽【2.0创意企划专场】"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "你是否已经厌倦了传统漫展上的千篇一律？是否有很多想在漫展上整的小巧思？来设计你的企划吧！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "活动企划设计书包括：活动主题、流程规划、初步预算等。"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "无论是精巧的互动游戏还是整活！一旦通过即可获得启动资金，与我们携手，将你的创意变为激动人心的现实！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "企划书请发送到官方邮箱：q505667488"
+				},
+				{
+					"kind": "at",
+					"text": "@gmail.com"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【截止时间】2026年5月10日 24:00"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"title": "【江城学园FES 2.0 定档预告！】",
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/ba9662e48c67d8add3c6aec6aeca58161577097749.png"]
 		},
 		{
 			"id_str": "1182610221279739904",
-			"type": "VIDEO",
 			"timestamp": "1774186299",
+			"type": "VIDEO",
 			"content": "",
 			"images": []
 		},
 		{
 			"id_str": "1182184723160498258",
-			"type": "VIDEO",
 			"timestamp": "1774087230",
+			"type": "VIDEO",
 			"content": "",
 			"images": []
+		},
+		{
+			"id_str": "1180329030956613636",
+			"timestamp": "1773655168",
+			"type": "VIDEO",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1180184260491870233",
+			"timestamp": "1773621461",
+			"type": "FORWARD",
+			"content": "办一辈子fes好吗[大哭]",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "办一辈子fes好吗"
+				},
+				{
+					"kind": "emoji",
+					"text": "[大哭]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "江城学园fes_official",
+				"face": "https://i1.hdslb.com/bfs/face/ff1e8ff0dbba65fed21b454884a1bd9132a6d848.jpg",
+				"content": "",
+				"cover": "http://i2.hdslb.com/bfs/archive/5e5ec2cf87b967c6fb73e31d7604ded1574e7fc9.jpg",
+				"title": "办一台全国最大的校园漫展是怎么样的体验？【江城学园fes sp】",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1179673399953195012"
+			}
+		},
+		{
+			"id_str": "1176591009265483795",
+			"timestamp": "1772784842",
+			"type": "IMAGE",
+			"content": "早上中午晚上好呀！好久不见，大家有没有想兰枫呀！周日晚上兰枫要继续魔裁了哟“ψ(｀∇´)ψ\n",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "早上中午晚上好呀！好久不见，大家有没有想兰枫呀！周日晚上兰枫要继续魔裁了哟“ψ(｀∇´)ψ"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/35679d1fa09c5f7037016670b8d788bc1577097749.jpg"]
+		},
+		{
+			"id_str": "1172213630134910983",
+			"timestamp": "1771765654",
+			"type": "FORWARD",
+			"content": "新年快乐！大吉大利！哈撒给！！！",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "新年快乐！大吉大利！哈撒给！！！"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "华小科Official",
+				"face": "https://i1.hdslb.com/bfs/face/a008271676f7da09e6c00d2d01b42d7de46df017.jpg",
+				"content": "",
+				"cover": "http://i1.hdslb.com/bfs/archive/43b1242ce4c1a2830b7bf46e47aec84a7505a558.jpg",
+				"title": "【华小科】大吉——平凡浓郁的生活~大吉大利 大吉大利！",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1172165367635640405"
+			}
+		},
+		{
+			"id_str": "1172213462636429329",
+			"timestamp": "1771765615",
+			"type": "FORWARD",
+			"content": "好精致的手书好萌的小科[给心心]",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "好精致的手书好萌的小科"
+				},
+				{
+					"kind": "emoji",
+					"text": "[给心心]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/1597302b98827463f5b75c7cac1f29ea6ce572c4.png"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "华小科Official",
+				"face": "https://i1.hdslb.com/bfs/face/a008271676f7da09e6c00d2d01b42d7de46df017.jpg",
+				"content": "",
+				"cover": "http://i1.hdslb.com/bfs/archive/bb644b96d9ef7495373453100b1193f2e1be4dad.jpg",
+				"title": "【华小科】Science！唱响最初也是最后的实验~",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1172083574264823815"
+			}
+		},
+		{
+			"id_str": "1172072583455047714",
+			"timestamp": "1771732814",
+			"type": "VIDEO",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1171837970839240709",
+			"timestamp": "1771678189",
+			"type": "FORWARD",
+			"content": "这期神了！看完感觉自己的精神状态变化了许多",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "这期神了！看完感觉自己的精神状态变化了许多"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "斩炎之武WOTA艺inHUST",
+				"face": "https://i1.hdslb.com/bfs/face/b758caa96df1218f2e1d4e9fa31b971825262a5f.jpg",
+				"content": "",
+				"cover": "http://i1.hdslb.com/bfs/archive/98d0c3025db5164acfc6b5debaf26fc8bb8d0901.jpg",
+				"title": "【WOTA艺/整活向】心灵感应/テレパシ【华小科×风蓝 新春拜年祭单品】",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1171825176118034503"
+			}
 		}
 	]
 }

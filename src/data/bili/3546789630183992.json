@@ -1,5 +1,5 @@
 {
-	"updated_at": "2026-04-30T09:18:14.013Z",
+	"updated_at": "2026-05-02T02:59:31.930Z",
 	"user": {
 		"uid": 3546789630183992,
 		"nickname": "地苓苓Geographie",
@@ -51,47 +51,227 @@
 	"dynamics": [
 		{
 			"id_str": "1194025183507120128",
-			"type": "IMAGE",
 			"timestamp": "1776844052",
-			"content": "",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/596ceef54e3ec67abedb649c017341f63546789630183992.jpg"
-			]
+			"type": "IMAGE",
+			"content": "世界地球日（4月22日）是一项专为世界环境保护而设立的节日，这个节日已成为全球最大的民间环保节日，倡导人们珍惜自然资源，减少污染，保护生态环境，共同守护我们唯一的地球家园。\n大家出野外的时候也不要乱扔垃圾哦（顺便给大家看看苓苓的一个头饰）\n",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "世界地球日（4月22日）是一项专为世界环境保护而设立的节日，这个节日已成为全球最大的民间环保节日，倡导人们珍惜自然资源，减少污染，保护生态环境，共同守护我们唯一的地球家园。"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "大家出野外的时候也不要乱扔垃圾哦（顺便给大家看看苓苓的一个头饰）"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"title": "今天是世界地球日！！",
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/596ceef54e3ec67abedb649c017341f63546789630183992.jpg"]
 		},
 		{
 			"id_str": "1169974165483028481",
-			"type": "IMAGE",
 			"timestamp": "1771244238",
-			"content": "",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/763fecb4f210d9c08dde54e9bdcee5ba3546789630183992.jpg"
-			]
+			"type": "IMAGE",
+			"content": "祝大家除夕快乐！红包我就不发了，怕大家抢，给大家发个红封吧！\n",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "祝大家除夕快乐！红包我就不发了，怕大家抢，给大家发个红封吧！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/763fecb4f210d9c08dde54e9bdcee5ba3546789630183992.jpg"]
 		},
 		{
 			"id_str": "1166985641367437346",
-			"type": "VIDEO",
 			"timestamp": "1770548418",
+			"type": "VIDEO",
 			"content": "",
 			"images": []
 		},
 		{
 			"id_str": "1152513336700567584",
-			"type": "VIDEO",
 			"timestamp": "1767178822",
+			"type": "VIDEO",
 			"content": "",
 			"images": []
 		},
 		{
 			"id_str": "1148064175829811237",
-			"type": "IMAGE",
 			"timestamp": "1766142921",
-			"content": "",
+			"type": "IMAGE",
+			"content": "有苓苓的新周边 还有无料（但是staff说还没到苓苓也不知道是什么\n",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "有苓苓的新周边 还有无料（但是staff说还没到苓苓也不知道是什么"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"title": "周天欢迎大家来北林玩哦",
 			"images": [
 				"http://i0.hdslb.com/bfs/new_dyn/1b4fc3df5a58ef18025490ced515f4993546789630183992.jpg",
 				"http://i0.hdslb.com/bfs/new_dyn/9593caebf1c1fa22c8b53416ccd3da383546789630183992.jpg",
 				"http://i0.hdslb.com/bfs/new_dyn/1f0d428ff0f465e4cb7cc59419787d173546789630183992.jpg",
 				"http://i0.hdslb.com/bfs/new_dyn/68b31932ccba701a029fc37ffb1bca9e3546789630183992.jpg"
 			]
+		},
+		{
+			"id_str": "1142427310423539715",
+			"timestamp": "1764830486",
+			"type": "FORWARD",
+			"content": "我全招了，其实我是用歌声换取出道机会的矿石精​//@交小西Channel:我全招了，其实我是用歌声换取互联网账号的地缚灵[来古-呆滞]​//@华小科Official :我全招了，其实我是用歌声换取人类身体的野猪",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "我全招了，其实我是用歌声换取出道机会的矿石精​//"
+				},
+				{
+					"kind": "at",
+					"text": "@交小西Channel"
+				},
+				{
+					"kind": "text",
+					"text": ":我全招了，其实我是用歌声换取互联网账号的地缚灵"
+				},
+				{
+					"kind": "emoji",
+					"text": "[来古-呆滞]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/9a70b365e523f2379f395031ceefcebb75a45903.png"
+				},
+				{
+					"kind": "text",
+					"text": "​//"
+				},
+				{
+					"kind": "at",
+					"text": "@华小科Official "
+				},
+				{
+					"kind": "text",
+					"text": ":我全招了，其实我是用歌声换取人类身体的野猪"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "溪冉hira",
+				"face": "https://i1.hdslb.com/bfs/face/68368a98118230e10983020c03447a7f95690445.jpg",
+				"content": "",
+				"cover": "http://i0.hdslb.com/bfs/new_dyn/1a3e3cc7f51eafead8485450321898083546692106324064.png",
+				"title": "已投降",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1142090009454575632"
+			}
+		},
+		{
+			"id_str": "1133599305777545235",
+			"timestamp": "1762775056",
+			"type": "VIDEO",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1133125059743842322",
+			"timestamp": "1762664637",
+			"type": "TEXT",
+			"content": "今日（11月9日）晚19点在19楼217将举行边玩动漫社第一次迎新活动，活动内容包含趣味答题和部门招新等，有地苓苓的线上线下互动环节哦！欢迎各位新老社员前来报到！\n届时地苓苓的直播间也会进行实况转播！欢迎大家收看！",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "今日（11月9日）晚19点在19楼217将举行边玩动漫社第一次迎新活动，活动内容包含趣味答题和部门招新等，有地苓苓的线上线下互动环节哦！欢迎各位新老社员前来报到！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "届时地苓苓的直播间也会进行实况转播！欢迎大家收看！"
+				}
+			],
+			"images": []
+		},
+		{
+			"id_str": "1121706945072332801",
+			"timestamp": "1760006150",
+			"type": "VIDEO",
+			"content": "",
+			"images": []
+		},
+		{
+			"id_str": "1118308779823202343",
+			"timestamp": "1759214953",
+			"type": "FORWARD",
+			"content": "😭😭😭你去武地了你不来北地呐😭😭😭",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "😭😭😭你去武地了你不来北地呐😭😭😭"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "明日方舟",
+				"face": "https://i0.hdslb.com/bfs/face/d4005a0f9b898d8bb049caf9c6355f8e8f772a8f.jpg",
+				"content": "",
+				"cover": "http://i0.hdslb.com/bfs/new_dyn/22b49a31e834beb77b1a4a3cf8eb8564161775300.jpg",
+				"title": "",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1118300701003350025"
+			}
+		},
+		{
+			"id_str": "1115800956973350918",
+			"timestamp": "1758631055",
+			"type": "IMAGE",
+			"content": "今日秋分。\n\n*图片主体部分为AI生成。",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "今日秋分。"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "*图片主体部分为AI生成。"
+				}
+			],
+			"title": "昼夜平分日，寒暑交替时。",
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/eabb56cd1492b28afdd7eb9fa657ffb13546789630183992.png"]
+		},
+		{
+			"id_str": "1113631689287925768",
+			"timestamp": "1758125983",
+			"type": "IMAGE",
+			"content": "分享图片",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "分享图片"
+				}
+			],
+			"title": "Objection!",
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/251862c2ad1f9e5ccad2f90babeaff0f3546789630183992.jpg"]
 		}
 	]
 }

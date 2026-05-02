@@ -6,6 +6,7 @@ import xiaokeBg from '@/assets/Card/background/background_xiaoke.png';
 import xiaokeAvatar from '@/assets/Card/Avatar/Avatar_xiaoke.png';
 import lanfengBg from '@/assets/Card/background/background_lanfeng.png';
 import lanfengAvatar from '@/assets/Card/Avatar/Avatar_lanfeng.png';
+import d00Avatar from '@/assets/Card/Avatar/Avatar_d00.png';
 import '@/styles/card-carousel.css';
 
 interface OptimizedImage {
@@ -80,6 +81,21 @@ const lanfengAvatarMotion = {
   avatarEndRotate: 0,
 } satisfies AvatarMotion;
 
+const d00AvatarMotion = {
+  avatarWidth: 212,
+  avatarHeight: 108,
+  avatarHiddenRight: 16,
+  avatarShownRight: -90,
+  avatarStartX: -34,
+  avatarStartY: -42,
+  avatarStartScale: 0.6,
+  avatarStartRotate: -8,
+  avatarEndX: 0,
+  avatarEndY: -54,
+  avatarEndScale: 1.2,
+  avatarEndRotate: 0,
+} satisfies AvatarMotion;
+
 const cardTypes = {
   xiaoke: {
     background: xiaokeBg,
@@ -102,8 +118,9 @@ const cardTypes = {
     usePlaceholder: true,
   },
   d00: {
-    avatarMotion: xiaokeAvatarMotion,
-    usePlaceholder: true,
+    avatar: d00Avatar,
+    avatarMotion: d00AvatarMotion,
+    usePlaceholder: false,
   },
 } satisfies Record<string, CardType>;
 
@@ -117,14 +134,12 @@ const cards: CardItem[] = people.map((person, index) => ({
 const BG_WIDTHS = [320, 640, 960];
 const AVATAR_WIDTHS = [240, 480];
 
-const cardImages: Partial<Record<keyof typeof cardTypes, { background: OptimizedImage; avatar: OptimizedImage }>> = {};
+const cardImages: Partial<Record<keyof typeof cardTypes, { background?: OptimizedImage; avatar?: OptimizedImage }>> = {};
 for (const [type, def] of Object.entries(cardTypes) as [keyof typeof cardTypes, CardType][]) {
-  if (def.background && def.avatar) {
-    cardImages[type] = {
-      background: await optimize(def.background, BG_WIDTHS),
-      avatar: await optimize(def.avatar, AVATAR_WIDTHS),
-    };
-  }
+  const entry: { background?: OptimizedImage; avatar?: OptimizedImage } = {};
+  if (def.background) entry.background = await optimize(def.background, BG_WIDTHS);
+  if (def.avatar) entry.avatar = await optimize(def.avatar, AVATAR_WIDTHS);
+  if (entry.background || entry.avatar) cardImages[type] = entry;
 }
 ---
 
@@ -140,38 +155,39 @@ for (const [type, def] of Object.entries(cardTypes) as [keyof typeof cardTypes, 
           const loading = isPriority ? 'eager' : 'lazy';
           const fetchpriority = isPriority ? 'high' : 'auto';
           const characterStyle = `--avatar-width:${avatarMotion.avatarWidth}px;--avatar-height:${avatarMotion.avatarHeight}%;--avatar-hidden-right:${avatarMotion.avatarHiddenRight}px;--avatar-shown-right:${avatarMotion.avatarShownRight}px;--avatar-start-x:${avatarMotion.avatarStartX}%;--avatar-start-y:${avatarMotion.avatarStartY}%;--avatar-start-scale:${avatarMotion.avatarStartScale};--avatar-start-rotate:${avatarMotion.avatarStartRotate}deg;--avatar-end-x:${avatarMotion.avatarEndX}%;--avatar-end-y:${avatarMotion.avatarEndY}%;--avatar-end-scale:${avatarMotion.avatarEndScale};--avatar-end-rotate:${avatarMotion.avatarEndRotate}deg;`;
+          const showRealBg = !cardType.usePlaceholder && images?.background;
+          const showRealAvatar = !cardType.usePlaceholder && images?.avatar;
           return (
             <button class="carousel-card" data-index={index} data-id={card.id} type="button" aria-label={`选择${card.title}`}>
               <div class="card-content">
-                {cardType.usePlaceholder || !images ? (
-                  <>
-                    <div class="card-illustration card-illustration--placeholder"></div>
-                    <div class="card-character card-character--placeholder" style={characterStyle}></div>
-                  </>
+                {showRealBg ? (
+                  <img
+                    class="card-illustration"
+                    src={images!.background!.src}
+                    srcset={images!.background!.srcset}
+                    sizes="(max-width: 768px) 240px, 280px"
+                    alt={card.title}
+                    loading={loading}
+                    fetchpriority={fetchpriority}
+                    decoding="async"
+                  />
                 ) : (
-                  <>
-                    <img
-                      class="card-illustration"
-                      src={images.background.src}
-                      srcset={images.background.srcset}
-                      sizes="(max-width: 768px) 240px, 280px"
-                      alt={card.title}
-                      loading={loading}
-                      fetchpriority={fetchpriority}
-                      decoding="async"
-                    />
-                    <img
-                      class="card-character"
-                      src={images.avatar.src}
-                      srcset={images.avatar.srcset}
-                      sizes="212px"
-                      alt=""
-                      loading={loading}
-                      fetchpriority={fetchpriority}
-                      decoding="async"
-                      style={characterStyle}
-                    />
-                  </>
+                  <div class="card-illustration card-illustration--placeholder"></div>
+                )}
+                {showRealAvatar ? (
+                  <img
+                    class="card-character"
+                    src={images!.avatar!.src}
+                    srcset={images!.avatar!.srcset}
+                    sizes="212px"
+                    alt=""
+                    loading={loading}
+                    fetchpriority={fetchpriority}
+                    decoding="async"
+                    style={characterStyle}
+                  />
+                ) : (
+                  <div class="card-character card-character--placeholder" style={characterStyle}></div>
                 )}
               </div>
             </button>

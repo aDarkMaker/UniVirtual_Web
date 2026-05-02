@@ -14,7 +14,8 @@
 		".cache",
 		"build",
 		"bun.lock",
-		"*.min.js"
+		"*.min.js",
+		"data"
 	],
 	"words": [
 		"astro",
@@ -27,13 +28,18 @@
 		"Dede",
 		"fontsource",
 		"hono",
+		"imgs",
+		"klass",
 		"lanfeng",
 		"liya",
 		"noto",
+		"onlyfans",
 		"pubdate",
 		"qrcode",
+		"Rcmd",
 		"relayout",
 		"SESSDATA",
+		"smoothstep",
 		"subsubtitle",
 		"uids",
 		"univirtual",

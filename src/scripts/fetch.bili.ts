@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { BiliSnapshot, BiliUserInfo, BiliVideo, BiliDynamic } from '@/types/bili';
+import type { BiliSnapshot, BiliUserInfo, BiliVideo, BiliDynamic, BiliForwardBlock, BiliLiveBlock, RichNode, RichKind } from '@/types/bili';
 
 function buildCookie(): string {
 	const fields: Array<[string, string]> = [
@@ -54,29 +54,75 @@ async function fetchUserInfo(uid: number): Promise<BiliUserInfo | null> {
 	};
 }
 
+interface DrawItem {
+	src: string;
+}
+
+interface ArchiveBlock {
+	aid: string;
+	bvid: string;
+	title: string;
+	cover: string;
+	desc: string;
+	duration_text: string;
+	jump_url?: string;
+}
+
+interface LiveRcmdBlock {
+	content: string;
+}
+
+interface RawRichNode {
+	type?: string;
+	text?: string;
+	orig_text?: string;
+	emoji?: { icon_url?: string; text?: string };
+}
+
+interface RichDesc {
+	text?: string;
+	rich_text_nodes?: RawRichNode[];
+}
+
+interface DynamicModules {
+	module_author?: { name?: string; face?: string; pub_ts?: number };
+	module_dynamic?: {
+		major?: {
+			archive?: ArchiveBlock;
+			draw?: { items: DrawItem[] };
+			live_rcmd?: LiveRcmdBlock;
+			pgc?: { title?: string; cover?: string; jump_url?: string };
+			article?: { title?: string; covers?: string[]; jump_url?: string; desc?: string };
+			opus?: {
+				title?: string;
+				summary?: RichDesc;
+				pics?: Array<{ url: string }>;
+				jump_url?: string;
+			};
+		};
+		desc?: RichDesc | null;
+	};
+}
+
 interface DynamicItem {
 	id_str: string;
 	type: string;
-	modules: {
-		module_author?: { pub_ts?: number };
-		module_dynamic?: {
-			major?: {
-				archive?: { aid: string; bvid: string; title: string; cover: string; desc: string; duration_text: string };
-				draw?: { items: Array<{ src: string }> };
-			};
-			desc?: { text: string } | null;
-		};
-	};
+	modules: DynamicModules;
+	orig?: DynamicItem;
 }
+
+const OPUS_FEATURES =
+	'itemOpusStyle,opusBigCover,onlyfansVote,decorationCard,onlyfansAssetsV2,forwardListHidden,ugcDelete,onlyfansQaCard,editorIcon,opusPrivateVisible,fakeReply';
 
 async function fetchDynamicFeed(uid: number): Promise<DynamicItem[]> {
 	if (!COOKIE) {
 		console.warn(`  ⚠  no Bili cookie, skip dynamics for uid=${uid}`);
 		return [];
 	}
-	const res = await fetch(`https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=${uid}&offset=`, {
-		headers: buildHeaders(uid),
-	});
+	const res = await fetch(
+		`https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=${uid}&offset=&features=${OPUS_FEATURES}&platform=web`,
+		{ headers: buildHeaders(uid) }
+	);
 	const json = (await res.json()) as {
 		code: number;
 		message?: string;
@@ -87,6 +133,46 @@ async function fetchDynamicFeed(uid: number): Promise<DynamicItem[]> {
 		return [];
 	}
 	return json.data.items;
+}
+
+async function fetchDynamicDetail(id: string, uid: number): Promise<DynamicItem | null> {
+	if (!COOKIE) return null;
+	try {
+		const res = await fetch(`https://api.bilibili.com/x/polymer/web-dynamic/v1/detail?id=${id}&features=${OPUS_FEATURES}&platform=web`, {
+			headers: buildHeaders(uid),
+		});
+		const json = (await res.json()) as {
+			code: number;
+			data?: { item: DynamicItem };
+		};
+		if (json.code !== 0 || !json.data?.item) return null;
+		return json.data.item;
+	} catch {
+		return null;
+	}
+}
+
+async function enrichOpus(items: DynamicItem[], uid: number): Promise<DynamicItem[]> {
+	const out: DynamicItem[] = [];
+	for (const item of items) {
+		const major = item.modules.module_dynamic?.major;
+		const desc = item.modules.module_dynamic?.desc;
+		const opus = major?.opus;
+		const needsDetail =
+			opus && !desc?.text && !desc?.rich_text_nodes?.length && !opus.summary?.text && !opus.summary?.rich_text_nodes?.length && !opus.title;
+		if (!needsDetail) {
+			out.push(item);
+			continue;
+		}
+		await sleep(150);
+		const detail = await fetchDynamicDetail(item.id_str, uid);
+		out.push(detail ?? item);
+	}
+	return out;
+}
+
+function sleep(ms: number): Promise<void> {
+	return new Promise((r) => setTimeout(r, ms));
 }
 
 function parseDuration(text: string): number {
@@ -118,26 +204,200 @@ function extractVideos(items: DynamicItem[]): BiliVideo[] {
 	return videos;
 }
 
-function extractDynamics(items: DynamicItem[]): BiliDynamic[] {
-	return items.slice(0, 5).map((item) => {
-		const major = item.modules.module_dynamic?.major;
-		const desc = item.modules.module_dynamic?.desc?.text ?? '';
-		let type: BiliDynamic['type'] = 'TEXT';
-		let images: string[] = [];
-		if (major?.draw) {
-			type = 'IMAGE';
-			images = major.draw.items.map((i) => i.src);
-		} else if (major?.archive) {
-			type = 'VIDEO';
-		}
-		return {
-			id_str: item.id_str,
-			type,
-			timestamp: item.modules.module_author?.pub_ts ?? 0,
-			content: desc,
-			images,
+function parseLiveRcmd(raw: string): BiliLiveBlock | undefined {
+	try {
+		const parsed = JSON.parse(raw) as {
+			live_play_info?: {
+				title?: string;
+				cover?: string;
+				link?: string;
+				live_status?: number;
+				parent_area_name?: string;
+				area_name?: string;
+			};
 		};
-	});
+		const v = parsed.live_play_info;
+		if (!v) return undefined;
+		const status: BiliLiveBlock['status'] = v.live_status === 1 ? 'living' : v.live_status === 2 ? 'preview' : 'ended';
+		return {
+			title: v.title ?? '',
+			cover: v.cover ?? '',
+			link: v.link?.startsWith('//') ? `https:${v.link}` : (v.link ?? ''),
+			status,
+			area: v.parent_area_name ?? v.area_name,
+		};
+	} catch {
+		return undefined;
+	}
+}
+
+function buildForward(orig: DynamicItem): BiliForwardBlock {
+	const author = orig.modules.module_author;
+	const md = orig.modules.module_dynamic;
+	const text = md?.desc?.text ?? '';
+	const major = md?.major;
+	let cover = '';
+	let title = '';
+	if (major?.archive) {
+		cover = major.archive.cover;
+		title = major.archive.title;
+	} else if (major?.draw?.items?.length) {
+		cover = major.draw.items[0]?.src ?? '';
+	} else if (major?.live_rcmd) {
+		const live = parseLiveRcmd(major.live_rcmd.content);
+		cover = live?.cover ?? '';
+		title = live?.title ?? '';
+	} else if (major?.pgc) {
+		cover = major.pgc.cover ?? '';
+		title = major.pgc.title ?? '';
+	} else if (major?.article) {
+		cover = major.article.covers?.[0] ?? '';
+		title = major.article.title ?? '';
+	} else if (major?.opus) {
+		cover = major.opus.pics?.[0]?.url ?? '';
+		title = major.opus.title ?? '';
+	}
+	return {
+		nickname: author?.name ?? '',
+		face: author?.face ?? '',
+		content: text,
+		cover,
+		title,
+		deleted: orig.type === 'DYNAMIC_TYPE_NONE',
+		link: `https://t.bilibili.com/${orig.id_str}`,
+	};
+}
+
+const RICH_KIND_MAP: Record<string, RichKind> = {
+	RICH_TEXT_NODE_TYPE_TEXT: 'text',
+	RICH_TEXT_NODE_TYPE_AT: 'at',
+	RICH_TEXT_NODE_TYPE_EMOJI: 'emoji',
+	RICH_TEXT_NODE_TYPE_WEB: 'link',
+	RICH_TEXT_NODE_TYPE_BV: 'link',
+	RICH_TEXT_NODE_TYPE_TOPIC: 'topic',
+	RICH_TEXT_NODE_TYPE_LOTTERY: 'link',
+	RICH_TEXT_NODE_TYPE_VOTE: 'link',
+};
+
+function extractRich(d?: RichDesc | null): { text: string; rich: RichNode[] } {
+	const rich: RichNode[] = [];
+	if (!d) return { text: '', rich };
+	const nodes = d.rich_text_nodes;
+	if (!nodes || !nodes.length) {
+		return { text: d.text ?? '', rich };
+	}
+	for (const n of nodes) {
+		const kind = RICH_KIND_MAP[n.type ?? ''] ?? 'text';
+		const raw = n.orig_text ?? n.text ?? '';
+		if (kind === 'emoji') {
+			rich.push({ kind: 'emoji', text: raw, emoji: n.emoji?.icon_url });
+			continue;
+		}
+		const parts = raw.split('\n');
+		parts.forEach((part, i) => {
+			if (part) rich.push({ kind, text: part });
+			if (i < parts.length - 1) rich.push({ kind: 'br', text: '' });
+		});
+	}
+	const text = rich.map((n) => (n.kind === 'br' ? '\n' : n.text)).join('');
+	return { text, rich };
+}
+
+function classifyDynamic(item: DynamicItem): BiliDynamic | null {
+	const md = item.modules.module_dynamic;
+	const major = md?.major;
+	const ts = item.modules.module_author?.pub_ts ?? 0;
+	const base = { id_str: item.id_str, timestamp: ts };
+
+	const descRich = extractRich(md?.desc ?? undefined);
+	const opusRich = extractRich(major?.opus?.summary);
+	const opusTitle = major?.opus?.title?.trim() || undefined;
+
+	const richBundle = descRich.rich.length ? descRich : opusRich.rich.length ? opusRich : { text: descRich.text || opusRich.text || '', rich: [] };
+	const richField = richBundle.rich.length ? richBundle.rich : undefined;
+
+	if (item.type === 'DYNAMIC_TYPE_FORWARD' && item.orig) {
+		return {
+			...base,
+			type: 'FORWARD',
+			content: richBundle.text,
+			rich: richField,
+			title: opusTitle,
+			images: [],
+			forward: buildForward(item.orig),
+		};
+	}
+
+	if (major?.live_rcmd) {
+		const live = parseLiveRcmd(major.live_rcmd.content);
+		if (live) {
+			return {
+				...base,
+				type: 'LIVE',
+				content: richBundle.text,
+				rich: richField,
+				title: opusTitle,
+				images: live.cover ? [live.cover] : [],
+				live,
+			};
+		}
+	}
+
+	if (major?.archive) {
+		return {
+			...base,
+			type: 'VIDEO',
+			content: richBundle.text,
+			rich: richField,
+			images: [],
+		};
+	}
+
+	if (major?.draw?.items?.length) {
+		return {
+			...base,
+			type: 'IMAGE',
+			content: richBundle.text,
+			rich: richField,
+			title: opusTitle,
+			images: major.draw.items.map((i) => i.src),
+		};
+	}
+
+	if (major?.opus?.pics?.length) {
+		return {
+			...base,
+			type: 'IMAGE',
+			content: richBundle.text,
+			rich: richField,
+			title: opusTitle,
+			images: major.opus.pics.map((p) => p.url),
+		};
+	}
+
+	const text = richBundle.text || opusTitle || major?.article?.title || '';
+	if (text || richField) {
+		return {
+			...base,
+			type: 'TEXT',
+			content: text,
+			rich: richField,
+			title: opusTitle,
+			images: [],
+		};
+	}
+
+	return null;
+}
+
+function extractDynamics(items: DynamicItem[]): BiliDynamic[] {
+	const out: BiliDynamic[] = [];
+	for (const item of items) {
+		const d = classifyDynamic(item);
+		if (d) out.push(d);
+		if (out.length >= 12) break;
+	}
+	return out;
 }
 
 async function main() {
@@ -168,7 +428,8 @@ async function main() {
 		}
 
 		const videos = extractVideos(items);
-		const dynamics = extractDynamics(items);
+		const enriched = await enrichOpus(items.slice(0, 14), uid);
+		const dynamics = extractDynamics(enriched);
 
 		const snapshot: BiliSnapshot = {
 			updated_at: new Date().toISOString(),

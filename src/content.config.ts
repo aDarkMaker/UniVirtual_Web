@@ -19,6 +19,22 @@ const people = defineCollection({
 	}),
 });
 
+const about = defineCollection({
+	loader: glob({
+		pattern: '*.json',
+		base: './src/content/about',
+	}),
+	schema: z.object({
+		order: z.number().int().nonnegative(),
+		chapter: z.string(),
+		type: z.enum(['start', 'end', 'milestone']),
+		title: z.string(),
+		description: z.string(),
+		script: z.string().optional(),
+	}),
+});
+
 export const collections = {
 	people,
+	about,
 };

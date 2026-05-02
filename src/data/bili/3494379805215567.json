@@ -1,5 +1,5 @@
 {
-	"updated_at": "2026-04-30T09:18:22.866Z",
+	"updated_at": "2026-05-02T02:59:40.880Z",
 	"user": {
 		"uid": 3494379805215567,
 		"nickname": "交小西Channel",
@@ -31,44 +31,456 @@
 	"dynamics": [
 		{
 			"id_str": "1152542297669238790",
-			"type": "TEXT",
 			"timestamp": "1767185565",
+			"type": "FORWARD",
 			"content": "新年快乐[保卫萝卜_笔芯]",
-			"images": []
+			"rich": [
+				{
+					"kind": "text",
+					"text": "新年快乐"
+				},
+				{
+					"kind": "emoji",
+					"text": "[保卫萝卜_笔芯]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/5ff2ed5cb71b02010018cc5910ac7052a03769af.png"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "深层磁场SenseGames",
+				"face": "https://i0.hdslb.com/bfs/face/6a27282f14a5e87d202cfa62a147bbff0b45f211.jpg",
+				"content": "",
+				"cover": "",
+				"title": "新年快乐！以及关于《恋爱泡馍！》研发进度的报告",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1152541421534707733"
+			}
+		},
+		{
+			"id_str": "1197048526897414167",
+			"timestamp": "1777547979",
+			"type": "FORWARD",
+			"content": "恋爱泡馍新Demo已上线，欢迎大家品鉴~",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "恋爱泡馍新Demo已上线，欢迎大家品鉴~"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "交小西Channel",
+				"face": "https://i0.hdslb.com/bfs/face/adcb26ec052a2617631b46e6ddd14f7b88703d38.jpg",
+				"content": "",
+				"cover": "http://i0.hdslb.com/bfs/new_dyn/e45930137b1b8b47b70d482b5ef8ad4b3494379805215567.png",
+				"title": "",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1188763844248338456"
+			}
 		},
 		{
 			"id_str": "1188763844248338456",
-			"type": "IMAGE",
 			"timestamp": "1775619051",
-			"content": "",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/e45930137b1b8b47b70d482b5ef8ad4b3494379805215567.png"
-			]
+			"type": "IMAGE",
+			"content": "恋爱泡馍OST《长》已发布，新Demo将于4月30日更新，感谢同学们的期待和等待！\n更多新情报点击下方长图👇",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "恋爱泡馍OST《长》已发布，新Demo将于4月30日更新，感谢同学们的期待和等待！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "更多新情报点击下方长图👇"
+				}
+			],
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/e45930137b1b8b47b70d482b5ef8ad4b3494379805215567.png"]
 		},
 		{
 			"id_str": "1188762925137920022",
-			"type": "VIDEO",
 			"timestamp": "1775618837",
+			"type": "VIDEO",
 			"content": "",
 			"images": []
 		},
 		{
 			"id_str": "1188484654160674822",
-			"type": "IMAGE",
 			"timestamp": "1775554047",
-			"content": "",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/8cf80f67cd13039f5b51a354231129633494379805215567.png"
-			]
+			"type": "IMAGE",
+			"content": "[保卫萝卜_笔芯]\n",
+			"rich": [
+				{
+					"kind": "emoji",
+					"text": "[保卫萝卜_笔芯]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/5ff2ed5cb71b02010018cc5910ac7052a03769af.png"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/8cf80f67cd13039f5b51a354231129633494379805215567.png"]
 		},
 		{
 			"id_str": "1169809337496895508",
-			"type": "IMAGE",
 			"timestamp": "1771205861",
+			"type": "IMAGE",
+			"content": "【新图预热】\n“午后的宿舍，被阳光的暖意浸透。”\n\n历经半年多，《恋爱泡馍！》重制版Demo即将正式上线！\n敬请期待，以及除夕快乐！[FGO_开心]",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "【新图预热】"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "“午后的宿舍，被阳光的暖意浸透。”"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "历经半年多，《恋爱泡馍！》重制版Demo即将正式上线！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "敬请期待，以及除夕快乐！"
+				},
+				{
+					"kind": "emoji",
+					"text": "[FGO_开心]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/300dadb9ec3cf14cf5ed55e2542947fe6e4f0295.png"
+				}
+			],
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/100310bfb5758bfb0f460550a4e512f73494379805215567.png"]
+		},
+		{
+			"id_str": "1152513336700567620",
+			"timestamp": "1767178822",
+			"type": "VIDEO",
 			"content": "",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/100310bfb5758bfb0f460550a4e512f73494379805215567.png"
-			]
+			"images": []
+		},
+		{
+			"id_str": "1142423947415912457",
+			"timestamp": "1764829703",
+			"type": "FORWARD",
+			"content": "我全招了，其实我是用歌声换取互联网账号的地缚灵[来古-呆滞]​//@华小科Official:我全招了，其实我是用歌声换取人类身体的野猪",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "我全招了，其实我是用歌声换取互联网账号的地缚灵"
+				},
+				{
+					"kind": "emoji",
+					"text": "[来古-呆滞]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/9a70b365e523f2379f395031ceefcebb75a45903.png"
+				},
+				{
+					"kind": "text",
+					"text": "​//"
+				},
+				{
+					"kind": "at",
+					"text": "@华小科Official"
+				},
+				{
+					"kind": "text",
+					"text": ":我全招了，其实我是用歌声换取人类身体的野猪"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "溪冉hira",
+				"face": "https://i1.hdslb.com/bfs/face/68368a98118230e10983020c03447a7f95690445.jpg",
+				"content": "",
+				"cover": "http://i0.hdslb.com/bfs/new_dyn/1a3e3cc7f51eafead8485450321898083546692106324064.png",
+				"title": "已投降",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1142090009454575632"
+			}
+		},
+		{
+			"id_str": "1128107335359660032",
+			"timestamp": "1761496357",
+			"type": "FORWARD",
+			"content": "你是！不能忘记的人！",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "你是！不能忘记的人！"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "璃亚Official",
+				"face": "https://i1.hdslb.com/bfs/face/9b9b2ad0a009061b2d259e462b7ce5a67f2ee064.jpg",
+				"content": "",
+				"cover": "http://i0.hdslb.com/bfs/archive/d61c99c338d017845d0cf4b493c778006a098ff5.jpg",
+				"title": "【璃亚】浮泽魔法大陆归来！上海交大vup的重启时刻！",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1128039998914822195"
+			}
+		},
+		{
+			"id_str": "1116951845050253318",
+			"timestamp": "1758899017",
+			"type": "FORWARD",
+			"content": "感谢二创！！太可爱了 不得不让大家都看一下[保卫萝卜_笔芯]",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "感谢二创！！太可爱了 不得不让大家都看一下"
+				},
+				{
+					"kind": "emoji",
+					"text": "[保卫萝卜_笔芯]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/5ff2ed5cb71b02010018cc5910ac7052a03769af.png"
+				}
+			],
+			"images": [],
+			"forward": {
+				"nickname": "浮游Lev",
+				"face": "https://i1.hdslb.com/bfs/face/e8fd8834531fb4b4782ea8a56b8f2703cdccfd60.jpg",
+				"content": "",
+				"cover": "http://i0.hdslb.com/bfs/new_dyn/6267e82ec10ffd9d7302e3bbe1fe05e1353604313.png",
+				"title": "现在我是交小西粉丝",
+				"deleted": false,
+				"link": "https://t.bilibili.com/1116943882150477830"
+			}
+		},
+		{
+			"id_str": "1116119544774000672",
+			"timestamp": "1758705232",
+			"type": "IMAGE",
+			"content": "游戏《恋爱泡馍！青春老陕》配音招募正式开启，详情请查看评论区置顶链接。\n不限范围，按照文档要求投递试音即可～\n小西期待听到你的声音！[FGO_开心]",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "游戏《恋爱泡馍！青春老陕》配音招募正式开启，详情请查看评论区置顶链接。"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "不限范围，按照文档要求投递试音即可～"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "小西期待听到你的声音！"
+				},
+				{
+					"kind": "emoji",
+					"text": "[FGO_开心]",
+					"emoji": "https://i0.hdslb.com/bfs/emote/300dadb9ec3cf14cf5ed55e2542947fe6e4f0295.png"
+				}
+			],
+			"title": "【恋爱泡馍】配音招募！",
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/b5247cde5b0fdc2e07a1eef550e46ff63494379805215567.png"]
+		},
+		{
+			"id_str": "1111660496857071617",
+			"timestamp": "1757667029",
+			"type": "IMAGE",
+			"content": "大家好！这里是《恋爱泡馍！青春老陕》制作组深层磁场！本次，我们面向当前在校，对游戏制作感兴趣的同学，展开以下两类岗位的招募——\n\n【场景设计】\n能够使用Blender等软件进行场景建模、打光、风格化渲染、摄影，交付符合质量要求的场景插图\n【美术绘制】\n能够创作Q版/手绘风短漫，或绘制游戏内CG插图，交付符合质量要求的美术资源\n\n我们郑重保证：\n线上办公，无需线下到岗！\n任务导向，工作时长不限！\n薪资到位，随开实习证明！\n\n如果你：\n对校园题材及地域文化有浓厚兴趣\n具备良好的沟通能力和团队协作意识\n有稳定的课余时间，能够按时交付成果\n有与我们一同探索游戏行业的兴趣和热情——\n\n请携带你的简历及作品集，投递至邮箱：\nsense_science@outlook.com\n我们将尽快查看并回复！\n小西期待与你相见～\n\n*本次招募集中于美术方向，如果你在其他方向有兴趣和创作经验，也欢迎投递到以上邮箱！\n",
+			"rich": [
+				{
+					"kind": "text",
+					"text": "大家好！这里是《恋爱泡馍！青春老陕》制作组深层磁场！本次，我们面向当前在校，对游戏制作感兴趣的同学，展开以下两类岗位的招募——"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【场景设计】"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "能够使用Blender等软件进行场景建模、打光、风格化渲染、摄影，交付符合质量要求的场景插图"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "【美术绘制】"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "能够创作Q版/手绘风短漫，或绘制游戏内CG插图，交付符合质量要求的美术资源"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "我们郑重保证："
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "线上办公，无需线下到岗！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "任务导向，工作时长不限！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "薪资到位，随开实习证明！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "如果你："
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "对校园题材及地域文化有浓厚兴趣"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "具备良好的沟通能力和团队协作意识"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "有稳定的课余时间，能够按时交付成果"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "有与我们一同探索游戏行业的兴趣和热情——"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "请携带你的简历及作品集，投递至邮箱："
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "sense_science@outlook.com"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "我们将尽快查看并回复！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "小西期待与你相见～"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "br",
+					"text": ""
+				},
+				{
+					"kind": "text",
+					"text": "*本次招募集中于美术方向，如果你在其他方向有兴趣和创作经验，也欢迎投递到以上邮箱！"
+				},
+				{
+					"kind": "br",
+					"text": ""
+				}
+			],
+			"title": "【恋爱泡馍】合作岗位招募中！",
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/99dc0bacd96c79ddada5d13db263f0463494379805215567.png"]
 		}
 	]
 }
