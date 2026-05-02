@@ -24,7 +24,7 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 						const cardKlass = isMilestone ? 'about-card--milestone' : `about-card--${ch.data.type}`;
 
 						return (
-							<article class="about-scene" data-chapter-index={idx}>
+							<article class={`about-scene${idx === 0 ? ' is-active' : ''}`} data-chapter-index={idx}>
 								<div class="about-scene-left">
 									<div class={`about-card ${cardKlass}`}>
 										<div class="about-card-shadow" aria-hidden="true" />
@@ -106,156 +106,119 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 		const rightEls = Array.from(panorama.querySelectorAll<HTMLElement>('.about-scene-right'));
 		const sceneCount = sceneEls.length;
 
-		if (isMobile()) {
-			progressFill.style.width = '0%';
-			cardEls.forEach((c) => {
-				c.style.transform = 'none';
-				c.style.opacity = '1';
-			});
-			shadowEls.forEach((s) => { s.style.opacity = '0.6'; });
-			return;
-		}
+		const SNAP_DURATION = 480;
+		const DRAG_SNAP_THRESHOLD = 0.22;
+		const WHEEL_DEBOUNCE_MS = 180;
+		const WHEEL_DIR_THRESHOLD = 120;
 
-		const SCENE_W_RATIO = 1.0;
 		let panX = 0;
-		let vel = 0;
-		let maxX = 0;
-		let animId: number | null = null;
+		let currentNode = 0;
+		let isTransitioning = false;
+		let snapAnimId: number | null = null;
+		let snapFromX = 0;
+		let snapToX = 0;
+		let snapStartTime = 0;
+
 		let isDragging = false;
-		let dragStartX = 0;
-		let dragStartPan = 0;
-		let lastPtrX = 0;
-		let lastPtrTime = 0;
+		let dragOriginX = 0;
+		let dragOriginPan = 0;
+
 		let footstepTimer: number | null = null;
-		let activeIdx = 0;
 
-		function getSceneWidth() {
-			return viewport.clientWidth * SCENE_W_RATIO;
+		let wheelAccum = 0;
+		let wheelTimer: number | null = null;
+
+		function sceneWidth() {
+			const first = sceneEls[0];
+			return first ? first.offsetWidth : viewport.clientWidth;
 		}
 
-		function calcMax() {
-			const sw = getSceneWidth();
-			maxX = Math.max(0, (sceneCount - 1) * sw);
+		function nodeX(n: number) {
+			return n * sceneWidth();
 		}
 
-		function clampVal(v: number): number {
-			return Math.max(0, Math.min(maxX, v));
+		function clampNode(n: number) {
+			return Math.max(0, Math.min(sceneCount - 1, Math.round(n)));
 		}
 
-		function sceneCenter(i: number): number {
-			return i * getSceneWidth();
+		function easeOutExpo(t: number): number {
+			return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
 		}
 
-		function quintIn(t: number): number {
-			return t * t * t * t * t;
-		}
-
-		function quintOut(t: number): number {
-			return 1 - Math.pow(1 - t, 5);
-		}
-
-		function applyPan(x: number) {
-			panX = clampVal(x);
-			panorama.style.transform = `translateX(${-panX}px)`;
-			updateScene();
-			if (animId === null) startMotion();
-		}
-
-		function updateScene() {
-			const vw = viewport.clientWidth;
-			const sw = getSceneWidth();
-			const viewCenter = panX + vw * 0.38;
-
-			let best = 0;
-			let bestD = Infinity;
-			for (let i = 0; i < sceneCount; i++) {
-				const d = Math.abs(viewCenter - sceneCenter(i));
-				if (d < bestD) { bestD = d; best = i; }
+		function updateProgress(idx: number) {
+			const pct = `${(idx / (sceneCount - 1)) * 100}%`;
+			if (isMobile()) {
+				progressFill.style.width = '';
+				progressFill.style.height = pct;
+			} else {
+				progressFill.style.height = '';
+				progressFill.style.width = pct;
 			}
+		}
 
-			if (best !== activeIdx) {
-				const dir: 1 | -1 = best > activeIdx ? 1 : -1;
-				activeIdx = best;
+		function triggerFootsteps(fromIdx: number, toIdx: number) {
+			const dir: 1 | -1 = toIdx > fromIdx ? 1 : -1;
+			footsteps.classList.remove('is-walking', 'is-backward');
+			void footsteps.offsetWidth;
+			if (dir === -1) footsteps.classList.add('is-backward');
+			footsteps.classList.add('is-walking');
+			if (footstepTimer !== null) clearTimeout(footstepTimer);
+			footstepTimer = window.setTimeout(() => {
 				footsteps.classList.remove('is-walking', 'is-backward');
-				void footsteps.offsetWidth;
-				if (dir === -1) footsteps.classList.add('is-backward');
-				footsteps.classList.add('is-walking');
-				if (footstepTimer !== null) clearTimeout(footstepTimer);
-				footstepTimer = window.setTimeout(() => {
-					footsteps.classList.remove('is-walking', 'is-backward');
-					footstepTimer = null;
-				}, 1300);
-			}
-
-			progressFill.style.width = maxX > 0 ? `${(panX / maxX) * 100}%` : '0%';
-
-			for (let i = 0; i < sceneCount; i++) {
-				const sc = sceneCenter(i);
-				const raw = (viewCenter - sc) / sw;
-
-				let cardT: number;
-				let textT: number;
-				let scaleVal: number;
-
-				if (Math.abs(raw) <= 0.5) {
-					cardT = 0;
-					textT = 0;
-					scaleVal = 1;
-				} else if (raw > 0.5) {
-					const t = Math.min(1, (raw - 0.5) / 0.65);
-					cardT = quintIn(t);
-					textT = Math.min(1, (raw - 0.3) / 0.55);
-					scaleVal = 1 - 0.12 * t;
-				} else {
-					const t = Math.min(1, (-raw - 0.5) / 0.65);
-					cardT = quintIn(t);
-					textT = Math.min(1, (-raw - 0.3) / 0.55);
-					scaleVal = 1 - 0.12 * t;
-				}
-
-				const angle = -75 * cardT;
-				const lift = 40 * cardT;
-				const cardOpacity = cardT > 0.7 ? 1 - (cardT - 0.7) / 0.3 : 1;
-
-				const card = cardEls[i];
-				if (card) {
-					card.style.transform = `rotateX(${angle}deg) translateY(${lift}px) scale(${scaleVal})`;
-					card.style.opacity = String(cardOpacity);
-				}
-
-				const shadow = shadowEls[i];
-				if (shadow) {
-					shadow.style.opacity = String(cardT < 0.1 ? 0.6 : 0.6 * (1 - cardT));
-				}
-
-				const right = rightEls[i];
-				if (!right) continue;
-				const kids = Array.from(right.children) as HTMLElement[];
-
-				const textOp = 1 - quintOut(textT);
-				const dir = raw >= 0 ? -1 : 1;
-				const slideX = dir * textT * 32;
-
-				for (let j = 0; j < kids.length; j++) {
-					const k = kids[j]!;
-					k.style.transform = `translateX(${slideX}px)`;
-					k.style.opacity = String(textOp);
-				}
-			}
+				footstepTimer = null;
+			}, 1300);
 		}
 
-		function tick() {
-			vel *= 0.95;
-			if (Math.abs(vel) < 0.3) { vel = 0; animId = null; return; }
-			panX = clampVal(panX + vel);
+		function snapTick(now: number) {
+			const elapsed = now - snapStartTime;
+			const raw = Math.min(1, elapsed / SNAP_DURATION);
+			const eased = easeOutExpo(raw);
+			panX = snapFromX + (snapToX - snapFromX) * eased;
 			panorama.style.transform = `translateX(${-panX}px)`;
-			updateScene();
-			animId = requestAnimationFrame(tick);
+			if (raw >= 1) {
+				panX = snapToX;
+				panorama.style.transform = `translateX(${-panX}px)`;
+				isTransitioning = false;
+				snapAnimId = null;
+				return;
+			}
+			snapAnimId = requestAnimationFrame(snapTick);
 		}
 
-		function startMotion() {
-			if (animId !== null) return;
-			animId = requestAnimationFrame(tick);
+		function commitSnap(fromIdx: number, toIdx: number) {
+			if (isTransitioning && snapAnimId !== null) {
+				cancelAnimationFrame(snapAnimId);
+				snapAnimId = null;
+			}
+			if (toIdx !== fromIdx) {
+				triggerFootsteps(fromIdx, toIdx);
+				sceneEls[fromIdx]?.classList.remove('is-active');
+			}
+			sceneEls[toIdx]?.classList.add('is-active');
+			isTransitioning = true;
+			currentNode = toIdx;
+			updateProgress(toIdx);
+			snapFromX = panX;
+			snapToX = nodeX(toIdx);
+			snapStartTime = performance.now();
+			snapAnimId = requestAnimationFrame(snapTick);
+		}
+
+		function snapRelative(dir: number) {
+			const target = clampNode(currentNode + dir);
+			if (target === currentNode) return;
+			commitSnap(currentNode, target);
+		}
+
+		function flushWheel() {
+			if (wheelTimer !== null) {
+				clearTimeout(wheelTimer);
+				wheelTimer = null;
+			}
+			if (Math.abs(wheelAccum) >= WHEEL_DIR_THRESHOLD) {
+				snapRelative(wheelAccum > 0 ? 1 : -1);
+			}
+			wheelAccum = 0;
 		}
 
 		let userInteracted = false;
@@ -265,45 +228,137 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 			hint?.classList.add('is-faded');
 		}
 
+		if (isMobile()) {
+			cardEls.forEach((c) => {
+				c.style.transition = 'none';
+				c.style.transform = 'none';
+				c.style.opacity = '1';
+			});
+			shadowEls.forEach((s) => { s.style.opacity = '0.6'; });
+			rightEls.forEach((r) => {
+				const kids = Array.from(r.children) as HTMLElement[];
+				for (const k of kids) {
+					k.style.opacity = '1';
+					k.style.transform = '';
+				}
+			});
+			sceneEls.forEach((s) => s.classList.add('is-active'));
+
+			const aboutEl = document.getElementById('about-page') as HTMLElement;
+			if (aboutEl) {
+				const observer = new IntersectionObserver((entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							const idx = parseInt(
+								(entry.target as HTMLElement).dataset.chapterIndex ?? '0',
+								10,
+							);
+							if (idx !== currentNode) {
+								currentNode = idx;
+								updateProgress(idx);
+							}
+						}
+					}
+				}, { threshold: 0.6 });
+				for (const s of sceneEls) {
+					observer.observe(s);
+				}
+			}
+
+			panX = 0;
+			panorama.style.transform = '';
+			updateProgress(0);
+			return;
+		}
+
 		viewport.addEventListener('wheel', (e: WheelEvent) => {
 			if (isMobile()) return;
 			e.preventDefault();
-			if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
-			vel = 0;
-			applyPan(panX + e.deltaY * 0.8);
+
+			if (isTransitioning) {
+				if (snapAnimId !== null) {
+					cancelAnimationFrame(snapAnimId);
+					snapAnimId = null;
+				}
+				isTransitioning = false;
+				const nearest = clampNode(Math.round(panX / sceneWidth()));
+				currentNode = nearest;
+				panX = nodeX(nearest);
+				panorama.style.transform = `translateX(${-panX}px)`;
+				for (let i = 0; i < sceneCount; i++) {
+					sceneEls[i]?.classList.toggle('is-active', i === nearest);
+				}
+				updateProgress(nearest);
+			}
+
+			const absD = Math.abs(e.deltaY);
+			const isDiscreteWheel =
+				e.deltaMode === 0 && absD >= 40 && Number.isInteger(absD);
+
+			if (isDiscreteWheel) {
+				flushWheel();
+				snapRelative(e.deltaY > 0 ? 1 : -1);
+				fadeHint();
+				return;
+			}
+
+			wheelAccum += e.deltaY;
+			if (wheelTimer !== null) clearTimeout(wheelTimer);
+			wheelTimer = window.setTimeout(() => {
+				wheelTimer = null;
+				flushWheel();
+			}, WHEEL_DEBOUNCE_MS);
+
 			fadeHint();
 		}, { passive: false });
 
 		viewport.addEventListener('pointerdown', (e) => {
 			if (isMobile()) return;
-			if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
-			vel = 0;
+			flushWheel();
+			if (isTransitioning) {
+				if (snapAnimId !== null) {
+					cancelAnimationFrame(snapAnimId);
+					snapAnimId = null;
+				}
+				isTransitioning = false;
+				const nearest = clampNode(Math.round(panX / sceneWidth()));
+				currentNode = nearest;
+				panX = nodeX(nearest);
+				panorama.style.transform = `translateX(${-panX}px)`;
+				for (let i = 0; i < sceneCount; i++) {
+					sceneEls[i]?.classList.toggle('is-active', i === nearest);
+				}
+				updateProgress(nearest);
+				return;
+			}
 			isDragging = true;
-			dragStartX = e.clientX;
-			dragStartPan = panX;
-			lastPtrX = e.clientX;
-			lastPtrTime = Date.now();
+			dragOriginX = e.clientX;
+			dragOriginPan = panX;
+			for (let i = 0; i < sceneCount; i++) {
+				sceneEls[i]?.classList.add('is-active');
+			}
 			viewport.setPointerCapture(e.pointerId);
 		});
 
 		viewport.addEventListener('pointermove', (e) => {
 			if (!isDragging) return;
-			const dx = dragStartX - e.clientX;
-			panX = clampVal(dragStartPan + dx);
+			const dx = dragOriginX - e.clientX;
+			const sw = sceneWidth();
+			const maxX = (sceneCount - 1) * sw;
+			panX = Math.max(-sw * 0.25, Math.min(maxX + sw * 0.25, dragOriginPan + dx));
 			panorama.style.transform = `translateX(${-panX}px)`;
-			updateScene();
-			lastPtrX = e.clientX;
-			lastPtrTime = Date.now();
 		});
 
 		function endDrag() {
 			if (!isDragging) return;
 			isDragging = false;
-			const dt = Math.max(1, Date.now() - lastPtrTime);
-			const dx = dragStartX - lastPtrX;
-			vel = (dx / dt) * 12;
-			vel = Math.max(-52, Math.min(52, vel));
-			if (Math.abs(vel) > 0.5) startMotion();
+			const delta = dragOriginPan - panX;
+			const sw = sceneWidth();
+			if (Math.abs(delta) > sw * DRAG_SNAP_THRESHOLD) {
+				commitSnap(currentNode, clampNode(currentNode + (delta > 0 ? -1 : 1)));
+			} else {
+				commitSnap(currentNode, currentNode);
+			}
 			if (!userInteracted) fadeHint();
 		}
 
@@ -312,30 +367,28 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 
 		window.addEventListener('keydown', (e) => {
 			if (isMobile()) return;
-			const step = getSceneWidth();
 			if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
 				e.preventDefault();
-				if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
-				vel = 0;
-				applyPan(panX + step);
+				snapRelative(1);
 				fadeHint();
 			} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
 				e.preventDefault();
-				if (animId !== null) { cancelAnimationFrame(animId); animId = null; }
-				vel = 0;
-				applyPan(panX - step);
+				snapRelative(-1);
 				fadeHint();
 			}
 		});
 
 		window.addEventListener('resize', () => {
-			calcMax();
-			panX = clampVal(panX);
+			if (isMobile()) return;
+			panX = nodeX(currentNode);
 			panorama.style.transform = `translateX(${-panX}px)`;
-			updateScene();
+			for (let i = 0; i < sceneCount; i++) {
+				sceneEls[i]?.classList.toggle('is-active', i === currentNode);
+			}
 		});
 
-		calcMax();
-		updateScene();
+		panX = 0;
+		panorama.style.transform = `translateX(0px)`;
+		updateProgress(0);
 	})();
 </script>
