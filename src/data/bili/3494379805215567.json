@@ -1,5 +1,5 @@
 {
-	"updated_at": "2026-05-01T07:47:04.880Z",
+	"updated_at": "2026-05-02T02:59:40.880Z",
 	"user": {
 		"uid": 3494379805215567,
 		"nickname": "交小西Channel",
@@ -97,9 +97,7 @@
 					"text": "更多新情报点击下方长图👇"
 				}
 			],
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/e45930137b1b8b47b70d482b5ef8ad4b3494379805215567.png"
-			]
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/e45930137b1b8b47b70d482b5ef8ad4b3494379805215567.png"]
 		},
 		{
 			"id_str": "1188762925137920022",
@@ -124,9 +122,7 @@
 					"text": ""
 				}
 			],
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/8cf80f67cd13039f5b51a354231129633494379805215567.png"
-			]
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/8cf80f67cd13039f5b51a354231129633494379805215567.png"]
 		},
 		{
 			"id_str": "1169809337496895508",
@@ -172,9 +168,7 @@
 					"emoji": "https://i0.hdslb.com/bfs/emote/300dadb9ec3cf14cf5ed55e2542947fe6e4f0295.png"
 				}
 			],
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/100310bfb5758bfb0f460550a4e512f73494379805215567.png"
-			]
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/100310bfb5758bfb0f460550a4e512f73494379805215567.png"]
 		},
 		{
 			"id_str": "1152513336700567620",
@@ -304,9 +298,7 @@
 				}
 			],
 			"title": "【恋爱泡馍】配音招募！",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/b5247cde5b0fdc2e07a1eef550e46ff63494379805215567.png"
-			]
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/b5247cde5b0fdc2e07a1eef550e46ff63494379805215567.png"]
 		},
 		{
 			"id_str": "1111660496857071617",
@@ -488,9 +480,7 @@
 				}
 			],
 			"title": "【恋爱泡馍】合作岗位招募中！",
-			"images": [
-				"http://i0.hdslb.com/bfs/new_dyn/99dc0bacd96c79ddada5d13db263f0463494379805215567.png"
-			]
+			"images": ["http://i0.hdslb.com/bfs/new_dyn/99dc0bacd96c79ddada5d13db263f0463494379805215567.png"]
 		}
 	]
 }

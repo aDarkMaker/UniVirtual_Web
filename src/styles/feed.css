@@ -212,11 +212,7 @@
 	border-radius: 50%;
 	flex-shrink: 0;
 	padding: 1.5px;
-	background-image: linear-gradient(
-		135deg,
-		rgba(167, 139, 250, 0.45),
-		rgba(167, 139, 250, 0.05)
-	);
+	background-image: linear-gradient(135deg, rgba(167, 139, 250, 0.45), rgba(167, 139, 250, 0.05));
 }
 
 .feed-face {

@@ -1,16 +1,7 @@
 import 'dotenv/config';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type {
-	BiliSnapshot,
-	BiliUserInfo,
-	BiliVideo,
-	BiliDynamic,
-	BiliForwardBlock,
-	BiliLiveBlock,
-	RichNode,
-	RichKind,
-} from '@/types/bili';
+import type { BiliSnapshot, BiliUserInfo, BiliVideo, BiliDynamic, BiliForwardBlock, BiliLiveBlock, RichNode, RichKind } from '@/types/bili';
 
 function buildCookie(): string {
 	const fields: Array<[string, string]> = [
@@ -130,7 +121,7 @@ async function fetchDynamicFeed(uid: number): Promise<DynamicItem[]> {
 	}
 	const res = await fetch(
 		`https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=${uid}&offset=&features=${OPUS_FEATURES}&platform=web`,
-		{ headers: buildHeaders(uid) },
+		{ headers: buildHeaders(uid) }
 	);
 	const json = (await res.json()) as {
 		code: number;
@@ -147,10 +138,9 @@ async function fetchDynamicFeed(uid: number): Promise<DynamicItem[]> {
 async function fetchDynamicDetail(id: string, uid: number): Promise<DynamicItem | null> {
 	if (!COOKIE) return null;
 	try {
-		const res = await fetch(
-			`https://api.bilibili.com/x/polymer/web-dynamic/v1/detail?id=${id}&features=${OPUS_FEATURES}&platform=web`,
-			{ headers: buildHeaders(uid) },
-		);
+		const res = await fetch(`https://api.bilibili.com/x/polymer/web-dynamic/v1/detail?id=${id}&features=${OPUS_FEATURES}&platform=web`, {
+			headers: buildHeaders(uid),
+		});
 		const json = (await res.json()) as {
 			code: number;
 			data?: { item: DynamicItem };
@@ -169,12 +159,7 @@ async function enrichOpus(items: DynamicItem[], uid: number): Promise<DynamicIte
 		const desc = item.modules.module_dynamic?.desc;
 		const opus = major?.opus;
 		const needsDetail =
-			opus &&
-			!desc?.text &&
-			!desc?.rich_text_nodes?.length &&
-			!opus.summary?.text &&
-			!opus.summary?.rich_text_nodes?.length &&
-			!opus.title;
+			opus && !desc?.text && !desc?.rich_text_nodes?.length && !opus.summary?.text && !opus.summary?.rich_text_nodes?.length && !opus.title;
 		if (!needsDetail) {
 			out.push(item);
 			continue;
@@ -233,8 +218,7 @@ function parseLiveRcmd(raw: string): BiliLiveBlock | undefined {
 		};
 		const v = parsed.live_play_info;
 		if (!v) return undefined;
-		const status: BiliLiveBlock['status'] =
-			v.live_status === 1 ? 'living' : v.live_status === 2 ? 'preview' : 'ended';
+		const status: BiliLiveBlock['status'] = v.live_status === 1 ? 'living' : v.live_status === 2 ? 'preview' : 'ended';
 		return {
 			title: v.title ?? '',
 			cover: v.cover ?? '',
@@ -329,11 +313,7 @@ function classifyDynamic(item: DynamicItem): BiliDynamic | null {
 	const opusRich = extractRich(major?.opus?.summary);
 	const opusTitle = major?.opus?.title?.trim() || undefined;
 
-	const richBundle = descRich.rich.length
-		? descRich
-		: opusRich.rich.length
-			? opusRich
-			: { text: descRich.text || opusRich.text || '', rich: [] };
+	const richBundle = descRich.rich.length ? descRich : opusRich.rich.length ? opusRich : { text: descRich.text || opusRich.text || '', rich: [] };
 	const richField = richBundle.rich.length ? richBundle.rich : undefined;
 
 	if (item.type === 'DYNAMIC_TYPE_FORWARD' && item.orig) {
@@ -461,9 +441,7 @@ async function main() {
 		const outPath = resolve(DATA_DIR, `${uid}.json`);
 		writeFileSync(outPath, JSON.stringify(snapshot, null, '\t'));
 
-		console.log(
-			`  ✓ Saved: ${uid}.json (${user.nickname}, ${videos.length} videos, ${dynamics.length} dynamics)`,
-		);
+		console.log(`  ✓ Saved: ${uid}.json (${user.nickname}, ${videos.length} videos, ${dynamics.length} dynamics)`);
 
 		await new Promise((r) => setTimeout(r, 2000));
 	}

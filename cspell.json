@@ -1,22 +1,8 @@
 {
 	"version": "0.2",
 	"language": "en,zh-CN",
-	"files": [
-		"**/*"
-	],
-	"ignorePaths": [
-		"node_modules",
-		"dist",
-		"out",
-		".astro",
-		"coverage",
-		".turbo",
-		".cache",
-		"build",
-		"bun.lock",
-		"*.min.js",
-		"data"
-	],
+	"files": ["**/*"],
+	"ignorePaths": ["node_modules", "dist", "out", ".astro", "coverage", ".turbo", ".cache", "build", "bun.lock", "*.min.js", "data"],
 	"words": [
 		"astro",
 		"Bili",
