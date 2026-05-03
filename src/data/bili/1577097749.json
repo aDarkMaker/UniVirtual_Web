@@ -1,5 +1,5 @@
 {
-	"updated_at": "2026-05-02T02:59:34.164Z",
+	"updated_at": "2026-05-03T07:08:31.361Z",
 	"user": {
 		"uid": 1577097749,
 		"nickname": "兰枫Official",
@@ -299,7 +299,9 @@
 				}
 			],
 			"title": "【江城学园FES 2.0 定档预告！】",
-			"images": ["http://i0.hdslb.com/bfs/new_dyn/ba9662e48c67d8add3c6aec6aeca58161577097749.png"]
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/ba9662e48c67d8add3c6aec6aeca58161577097749.png"
+			]
 		},
 		{
 			"id_str": "1182610221279739904",
@@ -364,7 +366,9 @@
 					"text": ""
 				}
 			],
-			"images": ["http://i0.hdslb.com/bfs/new_dyn/35679d1fa09c5f7037016670b8d788bc1577097749.jpg"]
+			"images": [
+				"http://i0.hdslb.com/bfs/new_dyn/35679d1fa09c5f7037016670b8d788bc1577097749.jpg"
+			]
 		},
 		{
 			"id_str": "1172213630134910983",

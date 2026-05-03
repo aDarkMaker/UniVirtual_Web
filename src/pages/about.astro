@@ -24,7 +24,7 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 						const cardKlass = isMilestone ? 'about-card--milestone' : `about-card--${ch.data.type}`;
 
 						return (
-							<article class={`about-scene${idx === 0 ? ' is-active' : ''}`} data-chapter-index={idx}>
+							<article class="about-scene" data-chapter-index={idx}>
 								<div class="about-scene-left">
 									<div class={`about-card ${cardKlass}`}>
 										<div class="about-card-shadow" aria-hidden="true" />
@@ -101,15 +101,12 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 		const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
 
 		const sceneEls = Array.from(panorama.querySelectorAll<HTMLElement>('[data-chapter-index]'));
-		const cardEls = Array.from(panorama.querySelectorAll<HTMLElement>('.about-card'));
-		const shadowEls = Array.from(panorama.querySelectorAll<HTMLElement>('.about-card-shadow'));
-		const rightEls = Array.from(panorama.querySelectorAll<HTMLElement>('.about-scene-right'));
 		const sceneCount = sceneEls.length;
 
-		const SNAP_DURATION = 480;
-		const DRAG_SNAP_THRESHOLD = 0.22;
-		const WHEEL_DEBOUNCE_MS = 180;
-		const WHEEL_DIR_THRESHOLD = 120;
+		const SNAP_DURATION = 1680;
+		const DRAG_SNAP_THRESHOLD = 0.5;
+		const WHEEL_DEBOUNCE_MS = 400;
+		const WHEEL_DIR_THRESHOLD = 340;
 
 		let panX = 0;
 		let currentNode = 0;
@@ -141,12 +138,12 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 			return Math.max(0, Math.min(sceneCount - 1, Math.round(n)));
 		}
 
-		function easeOutExpo(t: number): number {
-			return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+		function easeInOutCubic(t: number): number {
+			return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 		}
 
 		function updateProgress(idx: number) {
-			const pct = `${(idx / (sceneCount - 1)) * 100}%`;
+			const pct = `${(idx / Math.max(1, sceneCount - 1)) * 100}%`;
 			if (isMobile()) {
 				progressFill.style.width = '';
 				progressFill.style.height = pct;
@@ -169,10 +166,22 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 			}, 1300);
 		}
 
+		function setActiveScene(idx: number) {
+			for (let i = 0; i < sceneCount; i++) {
+				sceneEls[i]?.classList.toggle('is-active', i === idx);
+			}
+		}
+
+		function clearLeavingScenes() {
+			for (const el of sceneEls) {
+				el?.classList.remove('is-leaving');
+			}
+		}
+
 		function snapTick(now: number) {
 			const elapsed = now - snapStartTime;
 			const raw = Math.min(1, elapsed / SNAP_DURATION);
-			const eased = easeOutExpo(raw);
+			const eased = easeInOutCubic(raw);
 			panX = snapFromX + (snapToX - snapFromX) * eased;
 			panorama.style.transform = `translateX(${-panX}px)`;
 			if (raw >= 1) {
@@ -180,6 +189,8 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 				panorama.style.transform = `translateX(${-panX}px)`;
 				isTransitioning = false;
 				snapAnimId = null;
+				clearLeavingScenes();
+				setActiveScene(currentNode);
 				return;
 			}
 			snapAnimId = requestAnimationFrame(snapTick);
@@ -192,9 +203,14 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 			}
 			if (toIdx !== fromIdx) {
 				triggerFootsteps(fromIdx, toIdx);
-				sceneEls[fromIdx]?.classList.remove('is-active');
+				for (const el of sceneEls) {
+					el?.classList.remove('is-active', 'is-leaving');
+				}
+				if (!isMobile()) {
+					sceneEls[fromIdx]?.classList.add('is-leaving');
+				}
 			}
-			sceneEls[toIdx]?.classList.add('is-active');
+
 			isTransitioning = true;
 			currentNode = toIdx;
 			updateProgress(toIdx);
@@ -221,6 +237,22 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 			wheelAccum = 0;
 		}
 
+		function abortTransition() {
+			clearLeavingScenes();
+			if (!isTransitioning) return;
+			if (snapAnimId !== null) {
+				cancelAnimationFrame(snapAnimId);
+				snapAnimId = null;
+			}
+			isTransitioning = false;
+			const nearest = clampNode(Math.round(panX / sceneWidth()));
+			currentNode = nearest;
+			panX = nodeX(nearest);
+			panorama.style.transform = `translateX(${-panX}px)`;
+			setActiveScene(nearest);
+			updateProgress(nearest);
+		}
+
 		let userInteracted = false;
 		function fadeHint() {
 			if (userInteracted) return;
@@ -229,45 +261,75 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 		}
 
 		if (isMobile()) {
-			cardEls.forEach((c) => {
-				c.style.transition = 'none';
-				c.style.transform = 'none';
-				c.style.opacity = '1';
-			});
-			shadowEls.forEach((s) => { s.style.opacity = '0.6'; });
-			rightEls.forEach((r) => {
-				const kids = Array.from(r.children) as HTMLElement[];
-				for (const k of kids) {
-					k.style.opacity = '1';
-					k.style.transform = '';
-				}
-			});
-			sceneEls.forEach((s) => s.classList.add('is-active'));
+			panorama.style.transform = '';
+			panX = 0;
+			currentNode = -1;
 
 			const aboutEl = document.getElementById('about-page') as HTMLElement;
-			if (aboutEl) {
-				const observer = new IntersectionObserver((entries) => {
-					for (const entry of entries) {
-						if (entry.isIntersecting) {
-							const idx = parseInt(
-								(entry.target as HTMLElement).dataset.chapterIndex ?? '0',
-								10,
-							);
-							if (idx !== currentNode) {
-								currentNode = idx;
-								updateProgress(idx);
-							}
-						}
+			const MOBILE_SETTLE_MS = 260;
+
+			let mobileSettleTimer: number | null = null;
+			let mobileActiveIdx = -1;
+
+			function sceneInView(container: HTMLElement): number {
+				const cRect = container.getBoundingClientRect();
+				const midY = cRect.top + cRect.height * 0.5;
+				let best = 0;
+				let bestDist = Infinity;
+				for (let i = 0; i < sceneCount; i++) {
+					const r = sceneEls[i].getBoundingClientRect();
+					const sceneMid = r.top + r.height * 0.4;
+					const d = Math.abs(sceneMid - midY);
+					if (d < bestDist) {
+						bestDist = d;
+						best = i;
 					}
-				}, { threshold: 0.6 });
-				for (const s of sceneEls) {
-					observer.observe(s);
+				}
+				return best;
+			}
+
+			function settleMobile() {
+				if (!aboutEl) return;
+				const idx = sceneInView(aboutEl);
+				if (idx !== mobileActiveIdx) {
+					setActiveScene(idx);
+					mobileActiveIdx = idx;
+					currentNode = idx;
+					updateProgress(idx);
 				}
 			}
 
-			panX = 0;
-			panorama.style.transform = '';
-			updateProgress(0);
+			if (aboutEl) {
+				const onScroll = () => {
+					if (mobileSettleTimer !== null) {
+						window.clearTimeout(mobileSettleTimer);
+						mobileSettleTimer = null;
+					}
+					mobileSettleTimer = window.setTimeout(settleMobile, MOBILE_SETTLE_MS);
+				};
+				aboutEl.addEventListener('scroll', onScroll, { passive: true });
+				aboutEl.addEventListener('scrollend', () => {
+					if (mobileSettleTimer !== null) {
+						window.clearTimeout(mobileSettleTimer);
+						mobileSettleTimer = null;
+					}
+					settleMobile();
+				}, { passive: true });
+			}
+
+			if (aboutEl) {
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						settleMobile();
+					});
+				});
+			} else {
+				sceneEls[0]?.classList.add('is-active');
+				updateProgress(0);
+			}
+
+			footsteps.style.display = 'none';
+			hint?.classList.add('is-faded');
 			return;
 		}
 
@@ -275,21 +337,7 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 			if (isMobile()) return;
 			e.preventDefault();
 
-			if (isTransitioning) {
-				if (snapAnimId !== null) {
-					cancelAnimationFrame(snapAnimId);
-					snapAnimId = null;
-				}
-				isTransitioning = false;
-				const nearest = clampNode(Math.round(panX / sceneWidth()));
-				currentNode = nearest;
-				panX = nodeX(nearest);
-				panorama.style.transform = `translateX(${-panX}px)`;
-				for (let i = 0; i < sceneCount; i++) {
-					sceneEls[i]?.classList.toggle('is-active', i === nearest);
-				}
-				updateProgress(nearest);
-			}
+			abortTransition();
 
 			const absD = Math.abs(e.deltaY);
 			const isDiscreteWheel =
@@ -315,28 +363,11 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 		viewport.addEventListener('pointerdown', (e) => {
 			if (isMobile()) return;
 			flushWheel();
-			if (isTransitioning) {
-				if (snapAnimId !== null) {
-					cancelAnimationFrame(snapAnimId);
-					snapAnimId = null;
-				}
-				isTransitioning = false;
-				const nearest = clampNode(Math.round(panX / sceneWidth()));
-				currentNode = nearest;
-				panX = nodeX(nearest);
-				panorama.style.transform = `translateX(${-panX}px)`;
-				for (let i = 0; i < sceneCount; i++) {
-					sceneEls[i]?.classList.toggle('is-active', i === nearest);
-				}
-				updateProgress(nearest);
-				return;
-			}
+			abortTransition();
 			isDragging = true;
 			dragOriginX = e.clientX;
 			dragOriginPan = panX;
-			for (let i = 0; i < sceneCount; i++) {
-				sceneEls[i]?.classList.add('is-active');
-			}
+			viewport.classList.add('is-dragging');
 			viewport.setPointerCapture(e.pointerId);
 		});
 
@@ -352,6 +383,7 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 		function endDrag() {
 			if (!isDragging) return;
 			isDragging = false;
+			viewport.classList.remove('is-dragging');
 			const delta = dragOriginPan - panX;
 			const sw = sceneWidth();
 			if (Math.abs(delta) > sw * DRAG_SNAP_THRESHOLD) {
@@ -380,15 +412,15 @@ const footstepRotations = [-18, 14, -10, 22, -16];
 
 		window.addEventListener('resize', () => {
 			if (isMobile()) return;
+			clearLeavingScenes();
 			panX = nodeX(currentNode);
 			panorama.style.transform = `translateX(${-panX}px)`;
-			for (let i = 0; i < sceneCount; i++) {
-				sceneEls[i]?.classList.toggle('is-active', i === currentNode);
-			}
+			setActiveScene(currentNode);
 		});
 
 		panX = 0;
 		panorama.style.transform = `translateX(0px)`;
+		sceneEls[0]?.classList.add('is-active');
 		updateProgress(0);
 	})();
 </script>
